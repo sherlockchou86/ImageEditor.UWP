@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImageEditor.Tools;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -103,8 +104,11 @@ namespace ImageEditor.Controls
                 this.Height = height * 3 / 4;
                 this.Width = this.Height * 3 / 4;
             }
-            tab1.Width = tab2.Width = tab3.Width = this.Width / 3;
-
+            tab1.Width = tab2.Width = tab3.Width = tab4.Width = this.Width / 4;
+            if (UWPPlatformTool.IsMobile)
+            {
+                popup.VerticalOffset = 24;
+            }
             border.Child = this;
 
             popup.Child = border;
@@ -143,7 +147,7 @@ namespace ImageEditor.Controls
                 this.Height = height * 3 / 4;
                 this.Width = this.Height * 3 / 4;
             }
-            tab1.Width = tab2.Width = tab3.Width = this.Width / 3;
+            tab1.Width = tab2.Width = tab3.Width = tab4.Width = this.Width / 4;
         }
     }
 }

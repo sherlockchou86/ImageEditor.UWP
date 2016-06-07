@@ -17,9 +17,9 @@
         </Grid.RowDefinitions>
         <!--title行-->
         <RelativePanel Grid.Row="0" Background="Orange" Padding="10">
-            <TextBlock Text="{x:Bind LeftButtonText}" FontSize="13" Foreground="White" RelativePanel.AlignLeftWithPanel="True"></TextBlock>
-            <TextBlock Text="{x:Bind Title}" FontSize="15" Foreground="White" RelativePanel.AlignHorizontalCenterWithPanel="True"></TextBlock>
-            <TextBlock Text="{x:Bind RightButtonText}" FontSize="13" Foreground="White" RelativePanel.AlignRightWithPanel="True"></TextBlock>
+            <TextBlock Text="{x:Bind LeftButtonText}" FontSize="15" Foreground="White" RelativePanel.AlignLeftWithPanel="True"></TextBlock>
+            <TextBlock Text="{x:Bind Title}" FontSize="17" Foreground="White" RelativePanel.AlignHorizontalCenterWithPanel="True"></TextBlock>
+            <TextBlock Text="{x:Bind RightButtonText}" FontSize="15" Foreground="White" RelativePanel.AlignRightWithPanel="True"></TextBlock>
         </RelativePanel>
         <!--工作区-->
         <StackPanel Grid.Row="1" Padding="10">
@@ -94,7 +94,7 @@
                     <PivotItem Margin="0">
                         <PivotItem.Content>
                             <Border Height="70">
-                                <GridView Padding="5,0,5,0" SelectionMode="None" Height="70" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                                <GridView Margin="5,0,5,0" SelectionMode="None" Height="70" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
                                     <GridView.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <ItemsWrapGrid MaximumRowsOrColumns="100">
@@ -105,98 +105,14 @@
                                     <!--墙纸-->
                                     <GridViewItem>
                                         <StackPanel>
-                                            <Image Width="40" Height="65" Stretch="UniformToFill" Source="/Images/default_image.png">
+                                            <Image Width="40" Height="56" Stretch="UniformToFill" Source="/Images/default_image.png">
 
                                             </Image>
                                         </StackPanel>
                                     </GridViewItem>
                                     <GridViewItem>
                                         <StackPanel>
-                                            <Image Width="40" Height="65" Stretch="UniformToFill" Source="/Images/default_image.png">
-
-                                            </Image>
-                                        </StackPanel>
-                                    </GridViewItem>
-                                    <GridViewItem>
-                                        <StackPanel>
-                                            <Image Width="40" Height="65" Stretch="UniformToFill" Source="/Images/default_image.png">
-
-                                            </Image>
-                                        </StackPanel>
-                                    </GridViewItem>
-                                    <GridViewItem>
-                                        <StackPanel>
-                                            <Image Width="40" Height="65" Stretch="UniformToFill" Source="/Images/default_image.png">
-
-                                            </Image>
-                                        </StackPanel>
-                                    </GridViewItem>
-                                    <GridViewItem>
-                                        <StackPanel>
-                                            <Image Width="40" Height="65" Stretch="UniformToFill" Source="/Images/default_image.png">
-
-                                            </Image>
-                                        </StackPanel>
-                                    </GridViewItem>
-                                    <GridViewItem>
-                                        <StackPanel>
-                                            <Image Width="40" Height="65" Stretch="UniformToFill" Source="/Images/default_image.png">
-
-                                            </Image>
-                                        </StackPanel>
-                                    </GridViewItem>
-                                    <GridViewItem>
-                                        <StackPanel>
-                                            <Image Width="40" Height="65" Stretch="UniformToFill" Source="/Images/default_image.png">
-
-                                            </Image>
-                                        </StackPanel>
-                                    </GridViewItem>
-                                    <GridViewItem>
-                                        <StackPanel>
-                                            <Image Width="40" Height="65" Stretch="UniformToFill" Source="/Images/default_image.png">
-
-                                            </Image>
-                                        </StackPanel>
-                                    </GridViewItem>
-                                    <GridViewItem>
-                                        <StackPanel>
-                                            <Image Width="40" Height="65" Stretch="UniformToFill" Source="/Images/default_image.png">
-
-                                            </Image>
-                                        </StackPanel>
-                                    </GridViewItem>
-                                    <GridViewItem>
-                                        <StackPanel>
-                                            <Image Width="40" Height="65" Stretch="UniformToFill" Source="/Images/default_image.png">
-
-                                            </Image>
-                                        </StackPanel>
-                                    </GridViewItem>
-                                    <GridViewItem>
-                                        <StackPanel>
-                                            <Image Width="40" Height="65" Stretch="UniformToFill" Source="/Images/default_image.png">
-
-                                            </Image>
-                                        </StackPanel>
-                                    </GridViewItem>
-                                    <GridViewItem>
-                                        <StackPanel>
-                                            <Image Width="40" Height="65" Stretch="UniformToFill" Source="/Images/default_image.png">
-
-                                            </Image>
-                                        </StackPanel>
-                                    </GridViewItem>
-                                    <GridViewItem>
-                                        <StackPanel>
-                                            <Image Width="40" Height="65" Stretch="UniformToFill" Source="/Images/default_image.png">
-
-                                            </Image>
-                                        </StackPanel>
-                                    </GridViewItem>
-                                    <GridViewItem>
-                                        <StackPanel>
-                                            <Image Width="40" Height="65" Stretch="UniformToFill" Source="/Images/default_image.png">
+                                            <Image Width="40" Height="56" Stretch="UniformToFill" Source="/Images/default_image.png">
 
                                             </Image>
                                         </StackPanel>
@@ -205,18 +121,48 @@
                             </Border>
                         </PivotItem.Content>
                     </PivotItem>
-                    <PivotItem>
+                    <PivotItem Margin="0">
                         <PivotItem.Content>
-                            <GridView></GridView>
+                            <Border Height="70">
+                                <GridView Padding="5,0,5,0" SelectionMode="None" Height="70" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                                    <GridView.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <ItemsWrapGrid MaximumRowsOrColumns="100">
+
+                                            </ItemsWrapGrid>
+                                        </ItemsPanelTemplate>
+                                    </GridView.ItemsPanel>
+                                    <!--滤镜-->
+                                    <GridViewItem>
+                                        <StackPanel>
+                                            <Image Width="40" Height="45" Stretch="UniformToFill" Source="/Images/default_image.png">
+
+                                            </Image>
+                                            <Border Padding="0,3,0,3">
+                                                <TextBlock Text="怀旧" TextAlignment="Center" FontSize="13">
+                                                    
+                                                </TextBlock>
+                                            </Border>
+                                        </StackPanel>
+                                    </GridViewItem>
+                                </GridView>
+                            </Border>
+                        </PivotItem.Content>
+                    </PivotItem>
+                    <PivotItem Margin="0">
+                        <PivotItem.Content>
+                            <Border Height="70">
+                            </Border>
                         </PivotItem.Content>
                     </PivotItem>
                 </Pivot.Items>
             </Pivot>
             <!--tabs-->
             <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <RelativePanel Padding="3" Name="tab1" Width="100">
+                <RelativePanel Padding="3,3,3,5" Name="tab1" Width="75">
                     <TextBlock Text="布局"
                                FontSize="16" 
+                               Foreground="Orange"
                                RelativePanel.AlignHorizontalCenterWithPanel="True"
                                Margin="0,0,0,8">
                     </TextBlock>
@@ -227,9 +173,10 @@
                                 Fill="Orange">
                     </Rectangle>
                 </RelativePanel>
-                <RelativePanel Padding="3" Name="tab2" Width="100">
+                <RelativePanel Padding="3,3,3,5" Name="tab2" Width="75">
                     <TextBlock Text="墙纸"
                                FontSize="16"
+                               Foreground="Gray"
                                RelativePanel.AlignHorizontalCenterWithPanel="True"
                                Margin="0,0,0,8">
                     </TextBlock>
@@ -237,12 +184,13 @@
                                 RelativePanel.AlignLeftWithPanel="True" 
                                 RelativePanel.AlignRightWithPanel="True" 
                                 Height="4"
-                                Fill="Black">
+                                Fill="Gray">
                     </Rectangle>
                 </RelativePanel>
-                <RelativePanel Padding="3" Name="tab3" Width="100">
+                <RelativePanel Padding="3,3,3,5" Name="tab3" Width="75">
                     <TextBlock Text="滤镜"
                                FontSize="16"
+                               Foreground="Gray"
                                RelativePanel.AlignHorizontalCenterWithPanel="True"
                                Margin="0,0,0,8">
                     </TextBlock>
@@ -250,7 +198,21 @@
                                 RelativePanel.AlignLeftWithPanel="True" 
                                 RelativePanel.AlignRightWithPanel="True" 
                                 Height="4"
-                                Fill="Black">
+                                Fill="Gray">
+                    </Rectangle>
+                </RelativePanel>
+                <RelativePanel Padding="3,3,3,5" Name="tab4" Width="75">
+                    <TextBlock Text="涂鸦"
+                               FontSize="16"
+                               Foreground="Gray"
+                               RelativePanel.AlignHorizontalCenterWithPanel="True"
+                               Margin="0,0,0,8">
+                    </TextBlock>
+                    <Rectangle RelativePanel.AlignBottomWithPanel="True" 
+                                RelativePanel.AlignLeftWithPanel="True" 
+                                RelativePanel.AlignRightWithPanel="True" 
+                                Height="4"
+                                Fill="Gray">
                     </Rectangle>
                 </RelativePanel>
             </StackPanel>
