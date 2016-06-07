@@ -237,7 +237,7 @@
                                 RelativePanel.AlignLeftWithPanel="True" 
                                 RelativePanel.AlignRightWithPanel="True" 
                                 Height="4"
-                                Fill="Orange">
+                                Fill="Black">
                     </Rectangle>
                 </RelativePanel>
                 <RelativePanel Padding="3" Name="tab3" Width="100">
@@ -250,7 +250,7 @@
                                 RelativePanel.AlignLeftWithPanel="True" 
                                 RelativePanel.AlignRightWithPanel="True" 
                                 Height="4"
-                                Fill="Orange">
+                                Fill="Black">
                     </Rectangle>
                 </RelativePanel>
             </StackPanel>
