@@ -101,6 +101,11 @@
     <Compile Include="Controls\TagInsertControl.xaml.cs">
       <DependentUpon>TagInsertControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DrawingObjects\CropUI.cs" />
+    <Compile Include="DrawingObjects\DoodleUI.cs" />
+    <Compile Include="DrawingObjects\IDrawingUI.cs" />
+    <Compile Include="DrawingObjects\TagUI.cs" />
+    <Compile Include="DrawingObjects\WallPaperUI.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -114,7 +119,8 @@
     <None Include="ImageEditor_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\default_image.png" />
+    <Content Include="Images\default_back.png" />
+    <Content Include="Images\default_image.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -142,9 +148,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DrawingObjects\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

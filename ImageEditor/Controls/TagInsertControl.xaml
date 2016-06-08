@@ -10,6 +10,52 @@
     d:DesignWidth="400">
 
     <Grid>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0"
+                Name="InsertAt"
+                Width="50"
+                Height="50"
+                CornerRadius="25"
+                Tapped="InsertAt_Tapped"
+                Background="#AA000000">
+            <Border.Transitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition/>
+                </TransitionCollection>
+            </Border.Transitions>
+            <TextBlock Text="@" FontSize="26" Foreground="White" TextAlignment="Center" VerticalAlignment="Center"></TextBlock>
+        </Border>
+        <Border Grid.Column="1"
+                Name="InsertTopic"
+                Width="50"
+                Height="50"
+                CornerRadius="25"
+                Tapped="InsertTopic_Tapped"
+                Background="#AA000000">
+            <Border.Transitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition/>
+                </TransitionCollection>
+            </Border.Transitions>
+            <TextBlock Text="#" FontSize="26" VerticalAlignment="Center" TextAlignment="Center" Foreground="White"></TextBlock>
+        </Border>
+        <Border Grid.Column="2"
+                Name="InsertLocation"
+                Width="50"
+                Height="50"
+                CornerRadius="25"
+                Tapped="InsertLocation_Tapped"
+                Background="#AA000000">
+            <Border.Transitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition/>
+                </TransitionCollection>
+            </Border.Transitions>
+            <SymbolIcon Symbol="Download" Foreground="White"/>
+        </Border>
     </Grid>
 </UserControl>
