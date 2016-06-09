@@ -41,15 +41,12 @@ namespace ImageEditor.DrawingObjects
         }
         public void Draw(CanvasDrawingSession graphics)
         {
-            var stickness = 3;
+            var stickness = 1;
             var radius = 6;
             graphics.DrawRectangle(Region, DrawColor, stickness);  //矩形
             graphics.FillCircle((float)Left, (float)Top, radius, DrawColor);  //×
-            graphics.DrawText("×", (float)Left, (float)Top, Colors.White);
-            graphics.DrawCircle((float)(Left + Width), (float)Top, radius, DrawColor); //√
-            graphics.DrawText("√", (float)(Left + Width), (float)Top, Colors.Orange);
-            graphics.DrawCircle((float)(Left + Width), (float)(Top + Height), radius, DrawColor); //缩放
-            graphics.DrawText(@"\", (float)(Left + Width), (float)(Top + Height), Colors.Orange);
+            graphics.FillCircle((float)(Left + Width), (float)Top, radius, DrawColor); //√
+            graphics.FillCircle((float)(Left + Width), (float)(Top + Height), radius, DrawColor); //缩放
         }
     }
 }

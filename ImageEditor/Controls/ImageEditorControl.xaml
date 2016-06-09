@@ -39,6 +39,10 @@
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
                 RelativePanel.AlignVerticalCenterWithPanel="True"
                 Draw="MainCanvas_Draw" 
+                ManipulationMode="TranslateX,TranslateY"
+                ManipulationStarted="MainCanvas_ManipulationStarted"
+                ManipulationCompleted="MainCanvas_ManipulationCompleted"
+                ManipulationDelta="MainCanvas_ManipulationDelta"
                 Tapped="MainCanvas_Tapped">
 
             </canvas:CanvasControl>
@@ -48,7 +52,7 @@
             <!--分割线-->
             <Rectangle Margin="0,0,0,5" Fill="Gray" Opacity="0.3" Height="0.5"></Rectangle>
             <!--内容-->
-            <Pivot Margin="5,-50,5,0">
+            <Pivot Margin="5,-50,5,0" Name="MainCommandPanel" SelectionChanged="Pivot_SelectionChanged">
                 <Pivot.Items>
                     <PivotItem Margin="0">
                         <PivotItem.Content>
@@ -395,6 +399,55 @@
                     <PivotItem Margin="0">
                         <PivotItem.Content>
                             <Border Height="80">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <!--画笔粗细-->
+                                    <Border Name="PenSize1" Tag="10" Grid.Row="0" Grid.Column="0" Width="10" Height="10" Background="Orange" CornerRadius="5" Tapped="PenSize_Tapped">
+                                        <Ellipse Margin="1" Stroke="White"></Ellipse>
+                                    </Border>
+                                    <Border Name="PenSize2" Tag="16" Grid.Row="0" Grid.Column="1" Width="16" Height="16" Background="Orange" CornerRadius="8" Tapped="PenSize_Tapped">
+                                        <Ellipse Margin="1" Stroke="White"></Ellipse>
+                                    </Border>
+                                    <Border Name="PenSize3" Tag="20" Grid.Row="0" Grid.Column="2" Width="20" Height="20" Background="Orange" CornerRadius="10" Tapped="PenSize_Tapped">
+                                        <Ellipse Visibility="Collapsed" Margin="1" Stroke="White"></Ellipse>
+                                    </Border>
+                                    <!--画笔颜色-->
+                                    <Border Name="PenColor1" Grid.Row="1" Grid.Column="0" Width="16" Height="16" Background="Orange" Tapped="PenColor_Tapped">
+                                        <Rectangle Stroke="White" Margin="1"></Rectangle>
+                                    </Border>
+                                    <Border Name="PenColor2" Grid.Row="1" Grid.Column="1" Width="16" Height="16" Background="Red" Tapped="PenColor_Tapped">
+                                        <Rectangle Stroke="White" Margin="1"></Rectangle>
+                                    </Border>
+                                    <Border Name="PenColor3" Grid.Row="1" Grid.Column="2" Width="16" Height="16" Background="Green" Tapped="PenColor_Tapped">
+                                        <Rectangle Visibility="Collapsed" Stroke="White" Margin="1"></Rectangle>
+                                    </Border>
+                                    <Border Name="PenColor4" Grid.Row="1" Grid.Column="3" Width="16" Height="16" Background="Blue" Tapped="PenColor_Tapped">
+                                        <Rectangle Visibility="Collapsed" Stroke="White" Margin="1"></Rectangle>
+                                    </Border>
+                                    <Border Name="PenColor5" Grid.Row="1" Grid.Column="4" Width="16" Height="16" Background="Black" Tapped="PenColor_Tapped">
+                                        <Rectangle Visibility="Collapsed" Stroke="White" Margin="1"></Rectangle>
+                                    </Border>
+
+                                    <SymbolIcon 
+                                        Grid.Row="0" 
+                                        Grid.RowSpan="2" 
+                                        Grid.Column="6" 
+                                        Symbol="Undo" 
+                                        Tapped="SymbolIcon_Tapped"
+                                        Foreground="Gray"/>
+                                </Grid>
                             </Border>
                         </PivotItem.Content>
                     </PivotItem>
@@ -402,7 +455,7 @@
             </Pivot>
             <!--tabs-->
             <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <RelativePanel Padding="3,3,3,5" Name="tab1" Width="75">
+                <RelativePanel Padding="3,3,3,5" Name="tab1" Width="75" Tapped="tab_Tapped">
                     <TextBlock Text="布局"
                                FontSize="16" 
                                Foreground="Orange"
@@ -416,7 +469,7 @@
                                 Fill="Orange">
                     </Rectangle>
                 </RelativePanel>
-                <RelativePanel Padding="3,3,3,5" Name="tab2" Width="75">
+                <RelativePanel Padding="3,3,3,5" Name="tab2" Width="75" Tapped="tab_Tapped">
                     <TextBlock Text="墙纸"
                                FontSize="16"
                                Foreground="Gray"
@@ -430,7 +483,7 @@
                                 Fill="Gray">
                     </Rectangle>
                 </RelativePanel>
-                <RelativePanel Padding="3,3,3,5" Name="tab3" Width="75">
+                <RelativePanel Padding="3,3,3,5" Name="tab3" Width="75" Tapped="tab_Tapped">
                     <TextBlock Text="滤镜"
                                FontSize="16"
                                Foreground="Gray"
@@ -444,7 +497,7 @@
                                 Fill="Gray">
                     </Rectangle>
                 </RelativePanel>
-                <RelativePanel Padding="3,3,3,5" Name="tab4" Width="75">
+                <RelativePanel Padding="3,3,3,5" Name="tab4" Width="75" Tapped="tab_Tapped">
                     <TextBlock Text="涂鸦"
                                FontSize="16"
                                Foreground="Gray"
