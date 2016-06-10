@@ -329,6 +329,7 @@ namespace ImageEditor.Controls
                 }
             }
         }
+
         /// <summary>
         /// 涂鸦进行时
         /// </summary>
@@ -345,6 +346,55 @@ namespace ImageEditor.Controls
                 }
             }
         }
+        /// <summary>
+        /// 布局命令
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LayoutCommand_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var layout_command = sender as GridViewItem;
+            if (layout_command == LayoutCommand1) //白边 填充
+            {
+                _stretch = (_stretch == Stretch.Uniform) ? Stretch.UniformToFill : Stretch.Uniform;
+                (LayoutCommand1_Panel.Children[1] as TextBlock).Text = (_stretch == Stretch.Uniform) ? "填充" : "白边";
+            }
+            else if (layout_command == LayoutCommand2)  //黑底 白底
+            {
+                _back_color = (_back_color == Colors.White) ? Colors.Black : Colors.White;
+                (LayoutCommand2_Panel.Children[1] as TextBlock).Text = (_back_color == Colors.White) ? "黑底" : "白底";
+            }
+            else if (layout_command == LayoutCommand3)  //画布比例
+            {
+                _size_mode = (_size_mode + 1) % 3;
+                var t = "";
+                if (_size_mode == 0)
+                {
+                    t = "1:1";
+                }
+                else if (_size_mode == 1)
+                {
+                    t = "4:3";
+                }
+                else
+                {
+                    t = "3:4";
+                }
+                (LayoutCommand3_Panel.Children[1] as TextBlock).Text = t;
+            }
+            else if (layout_command == LayoutCommand4)  //旋转
+            {
+                _rotate = (_rotate + 90) % 360;
+            }
+            else if (layout_command == LayoutCommand5)  //剪切
+            {
+                if (_cropUI == null)
+                {
+                    _cropUI = new CropUI() { Top = 20, Left = 20, Height = 100, Width = 100, DrawColor = Colors.Gray };
+                }
+            }
+            MainCanvas.Invalidate();
+        }
         #endregion
 
         #region fields
@@ -357,7 +407,7 @@ namespace ImageEditor.Controls
         private DoodleUI _current_editing_doodleUI;  //当前涂鸦对象
         private CanvasBitmap _image;  //底图
 
-        IDrawingUI _cropUI = new CropUI() { Left = 10, Top = 10, Width = 200, Height = 100, DrawColor=Colors.Orange };  //剪切UI  
+        IDrawingUI _cropUI;//剪切UI  
         List<IDrawingUI> _tagsUIs;  //Tags
         Stack<IDrawingUI> _doodleUIs = new Stack<IDrawingUI>();  //涂鸦
         IDrawingUI _wall_paperUI; // 墙纸
@@ -462,5 +512,6 @@ namespace ImageEditor.Controls
             }
         }
         #endregion
+
     }
 }
