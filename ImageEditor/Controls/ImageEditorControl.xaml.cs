@@ -21,6 +21,7 @@ using Microsoft.Graphics.Canvas;
 using ImageEditor.DrawingObjects;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Shapes;
+using Windows.Storage;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -143,6 +144,31 @@ namespace ImageEditor.Controls
                   Window.Current.SizeChanged -= Current_SizeChanged;
               };
             popup.IsOpen = true;
+        }
+        /// <summary>
+        /// 显示编辑器（带底图参数）
+        /// </summary>
+        /// <param name="image"></param>
+        public async void Show(StorageFile image)
+        {
+            try
+            {
+                CanvasDevice cd = CanvasDevice.GetSharedDevice();
+                var stream = await image.OpenAsync(FileAccessMode.Read);
+                _image = await CanvasBitmap.LoadAsync(cd, stream);
+                if (_image != null)
+                {
+                    Show();
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch
+            {
+
+            }
         }
         /// <summary>
         /// PC窗体大小改变时，保证居中显示
@@ -394,6 +420,7 @@ namespace ImageEditor.Controls
                 }
             }
             MainCanvas.Invalidate();
+            SetCanvas();
         }
         #endregion
 
@@ -430,6 +457,7 @@ namespace ImageEditor.Controls
                 graphics.Clear(_back_color);
 
                 //绘制底图
+                DrawBackImage(graphics);
                 //绘制涂鸦
 
                 if (_doodleUIs != null && _doodleUIs.Count > 0)
@@ -453,7 +481,7 @@ namespace ImageEditor.Controls
             return target;
         }
         /// <summary>
-        /// 
+        /// 设置画布尺寸比例
         /// </summary>
         private void SetCanvas()
         {
@@ -477,7 +505,7 @@ namespace ImageEditor.Controls
                 }
                 else
                 {
-                    if (w / h <= 4 / 3)
+                    if (w / h <= (double)4 / 3)
                     {
                         MainCanvas.Width = w;
                         MainCanvas.Height= MainCanvas.Width * 3 / 4;
@@ -498,7 +526,7 @@ namespace ImageEditor.Controls
                 }
                 else
                 {
-                    if (h / w <= 4 / 3)
+                    if (h / w <= (double)4 / 3)
                     {
                         MainCanvas.Height = h;
                         MainCanvas.Width = MainCanvas.Height * 3 / 4;
@@ -510,7 +538,71 @@ namespace ImageEditor.Controls
                     }
                 }
             }
+            MainCanvas.Invalidate();
         }
+        /// <summary>
+        /// 绘制底图
+        /// </summary>
+        /// <param name="graphics"></param>
+        private void DrawBackImage(CanvasDrawingSession graphics)
+        {
+            if (_image != null)
+            {
+                Rect des;
+
+                var image_w = _image.Size.Width;
+                var image_h = _image.Size.Height;
+
+                if (_stretch == Stretch.Uniform)
+                {
+                    var w = MainCanvas.Width - 20;
+                    var h = MainCanvas.Height - 20;
+                    if (image_w / image_h > w / h)
+                    {
+                        var left = 10;
+
+                        var width = w;
+                        var height = (image_h / image_w) * width;
+
+                        var top = (h - height) / 2 + 10;
+
+                        des = new Rect(left, top, width, height);
+                    }
+                    else
+                    {
+                        var top = 10;
+                        var height = h;
+                        var width = (image_w / image_h) * height;
+                        var left = (w - width) / 2 + 10;
+                        des = new Rect(left, top, width, height);
+                    }
+                }
+                else
+                {
+                    var w = MainCanvas.Width;
+                    var h = MainCanvas.Height;
+                    var left = 0;
+                    var top = 0;
+                    if (image_w / image_h > w / h)
+                    {
+                        var height = h;
+                        var width = (image_w / image_h) * height;
+                        des = new Rect(left, top, width, height);
+                    }
+                    else
+                    {
+                        var width = w;
+                        var height = (image_h / image_w) * width;
+
+                        des = new Rect(left, top, width, height);
+                    }
+                }
+                // 滤镜特效
+
+                graphics.DrawImage(_image, des);
+            }
+        }
+
         #endregion
 
     }
