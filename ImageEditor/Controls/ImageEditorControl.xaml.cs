@@ -324,7 +324,7 @@ namespace ImageEditor.Controls
             PenSize1.Background = PenSize2.Background = PenSize3.Background = new SolidColorBrush(_pen_color);
         }
         /// <summary>
-        /// 涂鸦开始
+        /// 操作画布开始
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -337,9 +337,26 @@ namespace ImageEditor.Controls
                     _current_editing_doodleUI = new DoodleUI() { DrawingColor = _pen_color, DrawingSize = _pen_size };
                 }
             }
+            else if (MainCommandPanel.SelectedIndex == 0) //可能是剪切状态
+            {
+                if (_cropUI != null)  //确实是剪切状态
+                {
+                    if ((_cropUI as CropUI).Region.Contains(e.Position)) //移动剪切对象
+                    {
+                        _manipulation_type = 0;
+                        _pre_manipulation_position = e.Position;
+                    }
+                    if ((_cropUI as CropUI).RightBottomRegion.Contains(e.Position)) //缩放剪切区域
+                    {
+                        _manipulation_type = 1;
+                        _pre_manipulation_position = e.Position;
+                    }
+
+                }
+            }
         }
         /// <summary>
-        /// 涂鸦结束
+        /// 操作画布结束
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -354,10 +371,17 @@ namespace ImageEditor.Controls
                     MainCanvas.Invalidate();
                 }
             }
+            else if (MainCommandPanel.SelectedIndex == 0)
+            {
+                if (_cropUI != null)
+                {
+                    _pre_manipulation_position = null;
+                }
+            }
         }
 
         /// <summary>
-        /// 涂鸦进行时
+        /// 操作画布进行时
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -368,6 +392,28 @@ namespace ImageEditor.Controls
                 if (_current_editing_doodleUI != null)
                 {
                     _current_editing_doodleUI.Points.Add(e.Position);
+                    MainCanvas.Invalidate();
+                }
+            }
+            else if (MainCommandPanel.SelectedIndex == 0)
+            {
+                if (_cropUI != null && _pre_manipulation_position != null)
+                {
+                    var deltaX = e.Position.X - _pre_manipulation_position.Value.X;
+                    var deltaY = e.Position.Y - _pre_manipulation_position.Value.Y;
+
+                    if (_manipulation_type == 0)
+                    {
+                        (_cropUI as CropUI).Left += deltaX;
+                        (_cropUI as CropUI).Top += deltaY;
+                    }
+                    else if(_manipulation_type == 1)
+                    {
+                        (_cropUI as CropUI).Width += deltaX;
+                        (_cropUI as CropUI).Height += deltaY;
+                    }
+
+                    _pre_manipulation_position = e.Position;
                     MainCanvas.Invalidate();
                 }
             }
@@ -416,7 +462,7 @@ namespace ImageEditor.Controls
             {
                 if (_cropUI == null)
                 {
-                    _cropUI = new CropUI() { Top = 20, Left = 20, Height = 100, Width = 100, DrawColor = Colors.Gray };
+                    _cropUI = new CropUI() { Top = 20, Left = 20, Height = 100, Width = 100, DrawColor = Colors.Orange };
                 }
             }
             MainCanvas.Invalidate();
@@ -433,6 +479,8 @@ namespace ImageEditor.Controls
         private Color _pen_color = Colors.Orange;  //涂鸦画笔颜色
         private DoodleUI _current_editing_doodleUI;  //当前涂鸦对象
         private CanvasBitmap _image;  //底图
+        private Point? _pre_manipulation_position;  //操作起始点
+        private int _manipulation_type = 0; // 0表示移动剪切对象 1表示缩放剪切对象
 
         IDrawingUI _cropUI;//剪切UI  
         List<IDrawingUI> _tagsUIs;  //Tags
