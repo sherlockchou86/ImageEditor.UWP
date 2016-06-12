@@ -15,7 +15,7 @@ namespace ImageEditor.DrawingObjects
     {
         public double X
         {
-            get;set;
+            get; set;
         }
         public double Y
         {
@@ -41,6 +41,18 @@ namespace ImageEditor.DrawingObjects
                 return _region;
             }
         }
+        private Rect _close_region;
+        public Rect CloseRegion
+        {
+            get
+            {
+                return _close_region;
+            }
+        }
+        public bool ShowCloseBtn
+        {
+            get;set;
+        }
         public void Draw(CanvasDrawingSession graphics)
         {
             var radius = 4;
@@ -50,13 +62,13 @@ namespace ImageEditor.DrawingObjects
             graphics.FillCircle((float)X, (float)Y, radius, color);
             graphics.DrawCircle((float)X, (float)Y, radius, color2);
             
-            var ctFormat = new CanvasTextFormat { FontSize = 10.0f, WordWrapping = CanvasWordWrapping.NoWrap, FontFamily="微软雅黑" };
+            var ctFormat = new CanvasTextFormat { FontSize = 11.0f, WordWrapping = CanvasWordWrapping.NoWrap, FontFamily="微软雅黑" };
             var ctLayout = new CanvasTextLayout(graphics, TagText, ctFormat, 0.0f, 0.0f);
             //字体占用高度、宽度
             var width = ctLayout.DrawBounds.Width + 10;
-            var height = ctLayout.DrawBounds.Height + 10;
+            var height = ctLayout.DrawBounds.Height + 12;
 
-            var w = X + width + 10;
+            var w = X + width + 10 + height;
             var pathBuilder = new CanvasPathBuilder(graphics);
 
             if (w > Bound.Width)  //超出画布边界
@@ -72,9 +84,17 @@ namespace ImageEditor.DrawingObjects
                 var geometry = CanvasGeometry.CreatePath(pathBuilder);
 
                 graphics.FillGeometry(geometry, color2);
-                graphics.DrawText(TagText, (float)X - (float)width - 5 - 6 + 5, (float)Y - (float)height / 2 + 3, Colors.White, ctFormat);
+                graphics.DrawText(TagText, (float)X - (float)width - 5 - 6 + 5, (float)Y - (float)height / 2 + 4, Colors.White, ctFormat);
+
 
                 _region = new Rect((float)X - (float)width - 5 - 6, (float)Y - (float)height / 2, width, height);
+                _close_region = new Rect((float)X - (float)width - 5 - 6 - height, (float)Y - (float)height / 2, height, height);
+
+                if (ShowCloseBtn) //显示关闭按钮
+                {
+                    graphics.FillRectangle(_close_region, color2);
+                    graphics.DrawText("×", (float)_close_region.Left + 6, (float)_close_region.Top + 1, Colors.White,new CanvasTextFormat() { FontSize=14, FontFamily="微软雅黑" });
+                }
             }
             else
             {
@@ -89,9 +109,16 @@ namespace ImageEditor.DrawingObjects
                 var geo = CanvasGeometry.CreatePath(pathBuilder);
 
                 graphics.FillGeometry(geo, color2);
-                graphics.DrawText(TagText, (float)X + 5 + 4 + 5, (float)Y - (float)height / 2 + 3, Colors.White, ctFormat);
+                graphics.DrawText(TagText, (float)X + 5 + 4 + 5, (float)Y - (float)height / 2 + 4, Colors.White, ctFormat);
 
                 _region = new Rect((float)X + 5 + 6, (float)Y - (float)height / 2, width, height);
+                _close_region = new Rect((float)X + (float)width + 5 + 6, (float)Y - (float)height / 2, height, height);
+
+                if (ShowCloseBtn) //显示关闭按钮
+                {
+                    graphics.FillRectangle(_close_region, color2);
+                    graphics.DrawText("×", (float)_close_region.Left + 6, (float)_close_region.Top + 1, Colors.White, new CanvasTextFormat() { FontSize = 14, FontFamily = "微软雅黑" });
+                }
             }
 
         }

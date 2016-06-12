@@ -709,7 +709,7 @@ namespace ImageEditor.Controls
             }
         }
         /// <summary>
-        /// 判断是否点击空白区域
+        /// 判断是否点击空白区域 若是，返回true；否则进行相应操作
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
@@ -717,7 +717,7 @@ namespace ImageEditor.Controls
         {
             if (_cropUI != null)
             {
-                if ((_cropUI as CropUI).Region.Contains(p))
+                if ((_cropUI as CropUI).Region.Contains(p))  //点击的是 剪切对象 区域
                 {
                     return false;
                 }
@@ -726,8 +726,11 @@ namespace ImageEditor.Controls
             {
                 foreach (var tag in _tagsUIs)
                 {
-                    if ((tag as TagUI).Region.Contains(p))
+                    if ((tag as TagUI).Region.Contains(p))  //点击的是 tag 区域
                     {
+                        (tag as TagUI).ShowCloseBtn = !(tag as TagUI).ShowCloseBtn;
+                        MainCanvas.Invalidate();
+
                         return false;
                     }
                 }
