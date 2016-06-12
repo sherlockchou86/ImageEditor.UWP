@@ -220,7 +220,19 @@ namespace ImageEditor.Controls
         /// <param name="e"></param>
         private void MainCanvas_Tapped(object sender, TappedRoutedEventArgs e)
         {
+            if (!ClickEmpty(e.GetPosition(MainCanvas)))
+            {
+                return;
+            }
             TagInsertControl tic = new TagInsertControl();
+            tic.TagSelected += (tag, type) =>
+              {
+                  if (_tagsUIs == null)
+                      _tagsUIs = new List<IDrawingUI>();
+                  _tagsUIs.Add(new TagUI() { Bound = MainCanvas.Size, TagText = tag, TagType = type, X = (float)e.GetPosition(MainCanvas).X, Y = (float)e.GetPosition(MainCanvas).Y });
+                  MainCanvas.Invalidate();
+
+              };
             tic.Show();
         }
         /// <summary>
@@ -336,8 +348,22 @@ namespace ImageEditor.Controls
                 {
                     _current_editing_doodleUI = new DoodleUI() { DrawingColor = _pen_color, DrawingSize = _pen_size };
                 }
+                return;
             }
-            else if (MainCommandPanel.SelectedIndex == 0) //可能是剪切状态
+            if (_tagsUIs != null)
+            {
+                foreach (var tag in _tagsUIs)
+                {
+                    if ((tag as TagUI).Region.Contains(e.Position))
+                    {
+                        _current_tag = tag;
+                        _pre_manipulation_position = e.Position;
+                        _manipulation_type = 2;
+                        break;
+                    }
+                }
+            }
+            if (MainCommandPanel.SelectedIndex == 0) //可能是剪切状态
             {
                 if (_cropUI != null)  //确实是剪切状态
                 {
@@ -353,6 +379,7 @@ namespace ImageEditor.Controls
                     }
 
                 }
+                return;
             }
         }
         /// <summary>
@@ -370,13 +397,23 @@ namespace ImageEditor.Controls
                     _current_editing_doodleUI = null;
                     MainCanvas.Invalidate();
                 }
+                return;
             }
-            else if (MainCommandPanel.SelectedIndex == 0)
+            if (_current_tag != null)
+            {
+                if (_manipulation_type == 2)
+                {
+                    _pre_manipulation_position = null;
+                    _current_tag = null;
+                }
+            }
+            if (MainCommandPanel.SelectedIndex == 0)
             {
                 if (_cropUI != null)
                 {
                     _pre_manipulation_position = null;
                 }
+                return;
             }
         }
 
@@ -394,8 +431,23 @@ namespace ImageEditor.Controls
                     _current_editing_doodleUI.Points.Add(e.Position);
                     MainCanvas.Invalidate();
                 }
+                return;
             }
-            else if (MainCommandPanel.SelectedIndex == 0)
+            if (_current_tag != null)
+            {
+                if (_manipulation_type == 2)
+                {
+                    var deltaX = e.Position.X - _pre_manipulation_position.Value.X;
+                    var deltaY = e.Position.Y - _pre_manipulation_position.Value.Y;
+
+                    (_current_tag as TagUI).X += deltaX;
+                    (_current_tag as TagUI).Y += deltaY;
+                    _pre_manipulation_position = e.Position;
+
+                    MainCanvas.Invalidate();
+                }
+            }
+            if (MainCommandPanel.SelectedIndex == 0)
             {
                 if (_cropUI != null && _pre_manipulation_position != null)
                 {
@@ -416,6 +468,7 @@ namespace ImageEditor.Controls
                     _pre_manipulation_position = e.Position;
                     MainCanvas.Invalidate();
                 }
+                return;
             }
         }
         /// <summary>
@@ -480,7 +533,8 @@ namespace ImageEditor.Controls
         private DoodleUI _current_editing_doodleUI;  //当前涂鸦对象
         private CanvasBitmap _image;  //底图
         private Point? _pre_manipulation_position;  //操作起始点
-        private int _manipulation_type = 0; // 0表示移动剪切对象 1表示缩放剪切对象
+        private int _manipulation_type = 0; // 0表示移动剪切对象 1表示缩放剪切对象 2表示移动tag
+        private IDrawingUI _current_tag; //当前移动的tag
 
         IDrawingUI _cropUI;//剪切UI  
         List<IDrawingUI> _tagsUIs;  //Tags
@@ -519,6 +573,10 @@ namespace ImageEditor.Controls
                 }
                 //绘制贴图
                 //绘制Tag
+                if (_tagsUIs != null)
+                {
+                    _tagsUIs.ForEach((t) => { t.Draw(graphics); });
+                }
                 //绘制Crop裁剪工具
                 if (_cropUI != null)
                 {
@@ -650,7 +708,32 @@ namespace ImageEditor.Controls
                 graphics.DrawImage(_image, des);
             }
         }
-
+        /// <summary>
+        /// 判断是否点击空白区域
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        private bool ClickEmpty(Point p)
+        {
+            if (_cropUI != null)
+            {
+                if ((_cropUI as CropUI).Region.Contains(p))
+                {
+                    return false;
+                }
+            }
+            if (_tagsUIs != null)
+            {
+                foreach (var tag in _tagsUIs)
+                {
+                    if ((tag as TagUI).Region.Contains(p))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
         #endregion
 
     }

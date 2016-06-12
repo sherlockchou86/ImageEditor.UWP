@@ -26,6 +26,8 @@ namespace ImageEditor.Controls
         Border border = new Border();
         Popup popup = new Popup();
 
+        public event TagSelectedEventHandler TagSelected;
+
         public TagInsertControl()
         {
             this.InitializeComponent();
@@ -62,7 +64,7 @@ namespace ImageEditor.Controls
             };
             border.Tapped += (s, e) =>
               {
-                  popup.IsOpen = false;
+                  //popup.IsOpen = false;
               };
             popup.IsOpen = true;
         }
@@ -83,7 +85,11 @@ namespace ImageEditor.Controls
         /// <param name="e"></param>
         private void InsertLocation_Tapped(object sender, TappedRoutedEventArgs e)
         {
-
+            if (TagSelected != null)
+            {
+                TagSelected("北京市中关村丹棱街5号", 2);
+            }
+            popup.IsOpen = false;
         }
         /// <summary>
         /// 插入热门话题tag
@@ -92,7 +98,11 @@ namespace ImageEditor.Controls
         /// <param name="e"></param>
         private void InsertTopic_Tapped(object sender, TappedRoutedEventArgs e)
         {
-
+            if (TagSelected != null)
+            {
+                TagSelected("Microsoft China hehe 微软", 1);
+            }
+            popup.IsOpen = false;
         }
         /// <summary>
         /// 插入@好友
@@ -101,7 +111,13 @@ namespace ImageEditor.Controls
         /// <param name="e"></param>
         private void InsertAt_Tapped(object sender, TappedRoutedEventArgs e)
         {
-
+            if (TagSelected != null)
+            {
+                TagSelected("喝醉烈的酒", 0);
+            }
+            popup.IsOpen = false;
         }
     }
+
+    public delegate void TagSelectedEventHandler(string tag, int type);  //0 at好友 1热门话题 2插入位置
 }
