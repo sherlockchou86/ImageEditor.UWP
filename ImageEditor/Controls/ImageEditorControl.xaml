@@ -9,6 +9,13 @@
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     d:DesignHeight="400"
     d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///Resources/CustomDictionary.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
@@ -110,6 +117,32 @@
                                         </StackPanel>
                                     </GridViewItem>
                                 </GridView>
+                            </Border>
+                        </PivotItem.Content>
+                    </PivotItem>
+                    <PivotItem Margin="0">
+                        <PivotItem.Content>
+                            <Border Height="80" Padding="0,4,0,0">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.23*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="10"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Foreground="Gray" Text="亮度" FontSize="11" TextAlignment="Center" Margin="5"></TextBlock>
+                                    <Slider Name="Slider1" Value="0" Maximum="50" Minimum="-50" Style="{StaticResource CircleSlider}" Grid.Row="0" Grid.Column="1"  Padding="6,5,0,0" ValueChanged="Slider_ValueChanged"></Slider>
+                                    
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Foreground="Gray" Text="锐化" FontSize="11" TextAlignment="Center" Margin="5"></TextBlock>
+                                    <Slider Name="Slider2" Value="0" Style="{StaticResource CircleSlider}" Grid.Row="1" Grid.Column="1"  Padding="6,5,0,0" ValueChanged="Slider_ValueChanged"></Slider>
+
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Foreground="Gray" Text="模糊" FontSize="11" TextAlignment="Center" Margin="5"></TextBlock>
+                                    <Slider Name="Slider3" Value="0" Style="{StaticResource CircleSlider}" Grid.Row="2" Grid.Column="1"  Padding="6,5,0,0" ValueChanged="Slider_ValueChanged"></Slider>
+                                </Grid>
                             </Border>
                         </PivotItem.Content>
                     </PivotItem>
@@ -455,7 +488,7 @@
             </Pivot>
             <!--tabs-->
             <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <RelativePanel Padding="3,3,3,5" Name="tab1" Width="75" Tapped="tab_Tapped">
+                <RelativePanel Padding="3,3,3,5" Name="tab1" Width="60" Tapped="tab_Tapped">
                     <TextBlock Text="布局"
                                FontSize="16" 
                                Foreground="Orange"
@@ -469,7 +502,21 @@
                                 Fill="Orange">
                     </Rectangle>
                 </RelativePanel>
-                <RelativePanel Padding="3,3,3,5" Name="tab2" Width="75" Tapped="tab_Tapped">
+                <RelativePanel Padding="3,3,3,5" Name="tab5" Width="60" Tapped="tab_Tapped">
+                    <TextBlock Text="调节"
+                               FontSize="16"
+                               Foreground="Gray"
+                               RelativePanel.AlignHorizontalCenterWithPanel="True"
+                               Margin="0,0,0,8">
+                    </TextBlock>
+                    <Rectangle RelativePanel.AlignBottomWithPanel="True" 
+                                RelativePanel.AlignLeftWithPanel="True" 
+                                RelativePanel.AlignRightWithPanel="True" 
+                                Height="4"
+                                Fill="Gray">
+                    </Rectangle>
+                </RelativePanel>
+                <RelativePanel Padding="3,3,3,5" Name="tab2" Width="60" Tapped="tab_Tapped">
                     <TextBlock Text="墙纸"
                                FontSize="16"
                                Foreground="Gray"
@@ -483,7 +530,7 @@
                                 Fill="Gray">
                     </Rectangle>
                 </RelativePanel>
-                <RelativePanel Padding="3,3,3,5" Name="tab3" Width="75" Tapped="tab_Tapped">
+                <RelativePanel Padding="3,3,3,5" Name="tab3" Width="60" Tapped="tab_Tapped">
                     <TextBlock Text="滤镜"
                                FontSize="16"
                                Foreground="Gray"
@@ -497,7 +544,7 @@
                                 Fill="Gray">
                     </Rectangle>
                 </RelativePanel>
-                <RelativePanel Padding="3,3,3,5" Name="tab4" Width="75" Tapped="tab_Tapped">
+                <RelativePanel Padding="3,3,3,5" Name="tab4" Width="60" Tapped="tab_Tapped">
                     <TextBlock Text="涂鸦"
                                FontSize="16"
                                Foreground="Gray"

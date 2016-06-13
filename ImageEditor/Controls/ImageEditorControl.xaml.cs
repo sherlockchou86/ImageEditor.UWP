@@ -22,6 +22,7 @@ using ImageEditor.DrawingObjects;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Shapes;
 using Windows.Storage;
+using Microsoft.Graphics.Canvas.Effects;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -124,7 +125,7 @@ namespace ImageEditor.Controls
                 this.Height = height * 3 / 4;
                 this.Width = this.Height * 3 / 4;
             }
-            tab1.Width = tab2.Width = tab3.Width = tab4.Width = this.Width / 4;
+            tab1.Width = tab2.Width = tab3.Width = tab4.Width = tab5.Width = this.Width / 5;
 
             SetCanvas();
 
@@ -193,7 +194,7 @@ namespace ImageEditor.Controls
                 this.Height = height * 3 / 4;
                 this.Width = this.Height * 3 / 4;
             }
-            tab1.Width = tab2.Width = tab3.Width = tab4.Width = this.Width / 4;
+            tab1.Width = tab2.Width = tab3.Width = tab4.Width = tab5.Width = this.Width / 5;
             SetCanvas();
             MainCanvas.Invalidate();
             await Task.Delay(10);
@@ -253,21 +254,26 @@ namespace ImageEditor.Controls
                     }
                 case 1:
                     {
-                        tab = tab2;
+                        tab = tab5;
                         break;
                     }
                 case 2:
                     {
-                        tab = tab3;
+                        tab = tab2;
                         break;
                     }
                 case 3:
+                    {
+                        tab = tab3;
+                        break;
+                    }
+                case 4:
                     {
                         tab = tab4;
                         break;
                     }
             }
-            List<RelativePanel> l = new List<RelativePanel> { tab1, tab2, tab3, tab4 };
+            List<RelativePanel> l = new List<RelativePanel> { tab1, tab5, tab2, tab3, tab4 };
             foreach (RelativePanel t in l)
             {
                 (t.Children[0] as TextBlock).Foreground = new SolidColorBrush(Colors.Gray);
@@ -283,7 +289,7 @@ namespace ImageEditor.Controls
         /// <param name="e"></param>
         private void tab_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            List<RelativePanel> tabs = new List<RelativePanel> { tab1, tab2, tab3, tab4 };
+            List<RelativePanel> tabs = new List<RelativePanel> { tab1, tab5, tab2, tab3, tab4 };
             int selected = tabs.IndexOf(sender as RelativePanel);
 
             MainCommandPanel.SelectedIndex = selected;
@@ -342,7 +348,7 @@ namespace ImageEditor.Controls
         /// <param name="e"></param>
         private void MainCanvas_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
         {
-            if (MainCommandPanel.SelectedIndex == 3)  //涂鸦状态
+            if (MainCommandPanel.SelectedIndex == 4)  //涂鸦状态
             {
                 if (_current_editing_doodleUI == null)
                 {
@@ -389,7 +395,7 @@ namespace ImageEditor.Controls
         /// <param name="e"></param>
         private void MainCanvas_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
         {
-            if (MainCommandPanel.SelectedIndex == 3)
+            if (MainCommandPanel.SelectedIndex == 4)
             {
                 if (_current_editing_doodleUI != null)
                 {
@@ -424,7 +430,7 @@ namespace ImageEditor.Controls
         /// <param name="e"></param>
         private void MainCanvas_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
-            if (MainCommandPanel.SelectedIndex == 3) //涂鸦状态
+            if (MainCommandPanel.SelectedIndex == 4) //涂鸦状态
             {
                 if (_current_editing_doodleUI != null)
                 {
@@ -520,6 +526,15 @@ namespace ImageEditor.Controls
             }
             MainCanvas.Invalidate();
             SetCanvas();
+        }
+        /// <summary>
+        /// Slider的值发生变化
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Slider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            MainCanvas.Invalidate();
         }
         #endregion
 
@@ -705,7 +720,14 @@ namespace ImageEditor.Controls
                 }
                 // 滤镜特效
 
-                graphics.DrawImage(_image, des);
+                //亮度
+                ICanvasImage image = GetBrightnessEffect(_image);
+                //锐化
+                image = GetSharpenEffect(image);
+                //模糊
+                image = GetBlurEffect(image);
+
+                graphics.DrawImage(image, des, _image.Bounds);
             }
         }
         /// <summary>
@@ -746,5 +768,52 @@ namespace ImageEditor.Controls
         }
         #endregion
 
+        #region 滤镜特效
+        /// <summary>
+        /// 亮度
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        private ICanvasImage GetBrightnessEffect(ICanvasImage source)
+        {
+            var t = Slider1.Value / 500 * 2;
+            var exposureEffect = new ExposureEffect
+            {
+                Source = source,
+                Exposure = (float)t
+            };
+
+            return exposureEffect;
+        }
+        /// <summary>
+        /// 模糊
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        private ICanvasImage GetBlurEffect(ICanvasImage source)
+        {
+            var t = Slider3.Value / 100 * 12;
+            var blurEffect = new GaussianBlurEffect
+            {
+                Source = source,
+                BlurAmount = (float)t
+            };
+            return blurEffect;
+        }
+        /// <summary>
+        /// 锐化
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        private ICanvasImage GetSharpenEffect(ICanvasImage source)
+        {
+            var sharpenEffect = new SharpenEffect
+            {
+                Source = source,
+                Amount = (float)(Slider2.Value * 0.1)
+            };
+            return sharpenEffect;
+        }
+        #endregion
     }
 }
