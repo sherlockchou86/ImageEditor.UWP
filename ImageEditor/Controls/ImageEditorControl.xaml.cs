@@ -733,6 +733,13 @@ namespace ImageEditor.Controls
 
                         return false;
                     }
+
+                    if ((tag as TagUI).CloseRegion.Contains(p) && (tag as TagUI).ShowCloseBtn) //点击的是tag 关闭按钮
+                    {
+                        _tagsUIs.Remove(tag);
+                        MainCanvas.Invalidate();
+                        return false;
+                    }
                 }
             }
             return true;

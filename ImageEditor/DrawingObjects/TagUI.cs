@@ -53,6 +53,7 @@ namespace ImageEditor.DrawingObjects
         {
             get;set;
         }
+        private bool _translated = false;
         public void Draw(CanvasDrawingSession graphics)
         {
             var radius = 4;
@@ -61,7 +62,22 @@ namespace ImageEditor.DrawingObjects
 
             graphics.FillCircle((float)X, (float)Y, radius, color);
             graphics.DrawCircle((float)X, (float)Y, radius, color2);
-            
+            if (!_translated)
+            {
+                _translated = true;
+                if (TagType == 0)
+                {
+                    TagText = "@" + TagText;
+                }
+                else if (TagType == 1)
+                {
+                    TagText = "#" + TagText + "#";
+                }
+                else
+                {
+                    //TagText = "↓" + TagText;
+                }
+            }
             var ctFormat = new CanvasTextFormat { FontSize = 11.0f, WordWrapping = CanvasWordWrapping.NoWrap, FontFamily="微软雅黑" };
             var ctLayout = new CanvasTextLayout(graphics, TagText, ctFormat, 0.0f, 0.0f);
             //字体占用高度、宽度
@@ -93,7 +109,8 @@ namespace ImageEditor.DrawingObjects
                 if (ShowCloseBtn) //显示关闭按钮
                 {
                     graphics.FillRectangle(_close_region, color2);
-                    graphics.DrawText("×", (float)_close_region.Left + 6, (float)_close_region.Top + 1, Colors.White,new CanvasTextFormat() { FontSize=14, FontFamily="微软雅黑" });
+                    graphics.DrawLine((float)_close_region.Left, (float)_close_region.Top, (float)_close_region.Left, (float)_close_region.Top + (float)height, Colors.White, 0.5f);
+                    graphics.DrawText("×", (float)_close_region.Left + 6, (float)_close_region.Top, Colors.White,new CanvasTextFormat() { FontSize=15, FontFamily="微软雅黑" });
                 }
             }
             else
@@ -117,7 +134,8 @@ namespace ImageEditor.DrawingObjects
                 if (ShowCloseBtn) //显示关闭按钮
                 {
                     graphics.FillRectangle(_close_region, color2);
-                    graphics.DrawText("×", (float)_close_region.Left + 6, (float)_close_region.Top + 1, Colors.White, new CanvasTextFormat() { FontSize = 14, FontFamily = "微软雅黑" });
+                    graphics.DrawLine((float)_close_region.Left, (float)_close_region.Top, (float)_close_region.Left, (float)_close_region.Top + (float)height, Colors.White, 0.5f);
+                    graphics.DrawText("×", (float)_close_region.Left + 6, (float)_close_region.Top, Colors.White, new CanvasTextFormat() { FontSize = 15, FontFamily = "微软雅黑" });
                 }
             }
 
