@@ -199,7 +199,7 @@
 
                                             </Image>
                                             <Border Padding="0,1,0,2" Background="Orange">
-                                                <TextBlock Text="A" TextAlignment="Center" Foreground="Gray" FontSize="11">
+                                                <TextBlock Text="无" TextAlignment="Center" Foreground="White" FontSize="11">
 
                                                 </TextBlock>
                                             </Border>
@@ -211,7 +211,7 @@
 
                                             </Image>
                                             <Border Padding="0,1,0,2">
-                                                <TextBlock Text="B" TextAlignment="Center" Foreground="Gray" FontSize="11">
+                                                <TextBlock Text="黑白" TextAlignment="Center" Foreground="Gray" FontSize="11">
 
                                                 </TextBlock>
                                             </Border>
@@ -223,7 +223,7 @@
 
                                             </Image>
                                             <Border Padding="0,1,0,2">
-                                                <TextBlock Text="C" TextAlignment="Center" Foreground="Gray" FontSize="11">
+                                                <TextBlock Text="反色" TextAlignment="Center" Foreground="Gray" FontSize="11">
 
                                                 </TextBlock>
                                             </Border>
@@ -235,7 +235,7 @@
 
                                             </Image>
                                             <Border Padding="0,1,0,2">
-                                                <TextBlock Text="D" TextAlignment="Center" Foreground="Gray" FontSize="11">
+                                                <TextBlock Text="冷淡" TextAlignment="Center" Foreground="Gray" FontSize="11">
 
                                                 </TextBlock>
                                             </Border>
@@ -247,7 +247,7 @@
 
                                             </Image>
                                             <Border Padding="0,1,0,2">
-                                                <TextBlock Text="E" TextAlignment="Center" Foreground="Gray" FontSize="11">
+                                                <TextBlock Text="美食" TextAlignment="Center" Foreground="Gray" FontSize="11">
 
                                                 </TextBlock>
                                             </Border>
@@ -259,7 +259,7 @@
 
                                             </Image>
                                             <Border Padding="0,1,0,2">
-                                                <TextBlock Text="F" TextAlignment="Center" Foreground="Gray" FontSize="11">
+                                                <TextBlock Text="非主流" TextAlignment="Center" Foreground="Gray" FontSize="11">
 
                                                 </TextBlock>
                                             </Border>
@@ -271,7 +271,7 @@
 
                                             </Image>
                                             <Border Padding="0,1,0,2">
-                                                <TextBlock Text="G" TextAlignment="Center" Foreground="Gray" FontSize="11">
+                                                <TextBlock Text="梦幻" TextAlignment="Center" Foreground="Gray" FontSize="11">
 
                                                 </TextBlock>
                                             </Border>
@@ -283,7 +283,19 @@
 
                                             </Image>
                                             <Border Padding="0,1,0,2">
-                                                <TextBlock Text="H" TextAlignment="Center" Foreground="Gray" FontSize="11">
+                                                <TextBlock Text="雕刻" TextAlignment="Center" Foreground="Gray" FontSize="11">
+
+                                                </TextBlock>
+                                            </Border>
+                                        </StackPanel>
+                                    </GridViewItem>
+                                    <GridViewItem>
+                                        <StackPanel Padding="2" Tag="8">
+                                            <Image Width="46" Height="46" Stretch="UniformToFill" Source="/Images/default_image.jpg">
+
+                                            </Image>
+                                            <Border Padding="0,1,0,2">
+                                                <TextBlock Text="怀旧" TextAlignment="Center" Foreground="Gray" FontSize="11">
 
                                                 </TextBlock>
                                             </Border>

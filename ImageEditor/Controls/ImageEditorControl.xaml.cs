@@ -854,14 +854,14 @@ namespace ImageEditor.Controls
                     Source = source
                 };
             }
-            else if (_filter_index == 2)  //反向
+            else if (_filter_index == 2)  //反色
             {
                 return new InvertEffect
                 {
                     Source = source
                 };
             }
-            else if (_filter_index == 3)
+            else if (_filter_index == 3) //冷淡
             {
                 var hueRotationEffect = new HueRotationEffect
                 {
@@ -870,7 +870,7 @@ namespace ImageEditor.Controls
                 };
                 return hueRotationEffect;
             }
-            else if (_filter_index == 4)
+            else if (_filter_index == 4)  //美食
             {
                 var temperatureAndTintEffect = new TemperatureAndTintEffect
                 {
@@ -881,7 +881,7 @@ namespace ImageEditor.Controls
 
                 return temperatureAndTintEffect;
             }
-            else if (_filter_index == 5)
+            else if (_filter_index == 5) //非主流
             {
                 var temperatureAndTintEffect = new TemperatureAndTintEffect
                 {
@@ -892,18 +892,18 @@ namespace ImageEditor.Controls
 
                 return temperatureAndTintEffect;
             }
-            else if (_filter_index == 6)
+            else if (_filter_index == 6) //梦幻
             {
                 var vignetteEffect = new VignetteEffect
                 {
                     Source = source
                 };
                 vignetteEffect.Color = Color.FromArgb(255, 0xFF, 0xFF, 0xFF);
-                vignetteEffect.Amount = 1.0f;
+                vignetteEffect.Amount = 0.6f;
 
                 return vignetteEffect;
             }
-            else if (_filter_index == 7)
+            else if (_filter_index == 7) //雕刻
             {
                 var embossEffect = new EmbossEffect
                 {
@@ -912,6 +912,15 @@ namespace ImageEditor.Controls
                 embossEffect.Amount = 5;
                 embossEffect.Angle = 0;
                 return embossEffect;
+            }
+            else if (_filter_index == 8) //怀旧
+            {
+                var sepiaEffect = new SepiaEffect
+                {
+                    Source = source
+                };
+                sepiaEffect.Intensity = 1;
+                return sepiaEffect;
             }
             else
             {
