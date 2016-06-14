@@ -536,6 +536,23 @@ namespace ImageEditor.Controls
         {
             MainCanvas.Invalidate();
         }
+        /// <summary>
+        /// 选择滤镜
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Filters_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            foreach (var item in Filters.Items)
+            {
+                (((item as GridViewItem).Content as StackPanel).Children[1] as Border).Background = new SolidColorBrush(Colors.Transparent);
+            }
+            ((e.ClickedItem as StackPanel).Children[1] as Border).Background = new SolidColorBrush(Colors.Orange);
+
+            _filter_index = int.Parse((e.ClickedItem as StackPanel).Tag.ToString());
+
+            MainCanvas.Invalidate();
+        }
         #endregion
 
         #region fields
@@ -550,6 +567,8 @@ namespace ImageEditor.Controls
         private Point? _pre_manipulation_position;  //操作起始点
         private int _manipulation_type = 0; // 0表示移动剪切对象 1表示缩放剪切对象 2表示移动tag
         private IDrawingUI _current_tag; //当前移动的tag
+
+        private int _filter_index = 0;  //滤镜模板  0表示无滤镜
 
         IDrawingUI _cropUI;//剪切UI  
         List<IDrawingUI> _tagsUIs;  //Tags
@@ -727,6 +746,9 @@ namespace ImageEditor.Controls
                 //模糊
                 image = GetBlurEffect(image);
 
+                //应用滤镜模板
+                image = ApplyFilterTemplate(image);
+
                 graphics.DrawImage(image, des, _image.Bounds);
             }
         }
@@ -814,6 +836,89 @@ namespace ImageEditor.Controls
             };
             return sharpenEffect;
         }
+        /// <summary>
+        /// 应用滤镜模板
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        private ICanvasImage ApplyFilterTemplate(ICanvasImage source)
+        {
+            if (_filter_index == 0)  //无滤镜
+            {
+                return source;
+            }
+            else if (_filter_index == 1)  // 黑白
+            {
+                return new GrayscaleEffect
+                {
+                    Source = source
+                };
+            }
+            else if (_filter_index == 2)  //反向
+            {
+                return new InvertEffect
+                {
+                    Source = source
+                };
+            }
+            else if (_filter_index == 3)
+            {
+                var hueRotationEffect = new HueRotationEffect
+                {
+                    Source = source,
+                    Angle = 0.5f
+                };
+                return hueRotationEffect;
+            }
+            else if (_filter_index == 4)
+            {
+                var temperatureAndTintEffect = new TemperatureAndTintEffect
+                {
+                    Source = source
+                };
+                temperatureAndTintEffect.Temperature = 0.6f;
+                temperatureAndTintEffect.Tint = 0.6f;
+
+                return temperatureAndTintEffect;
+            }
+            else if (_filter_index == 5)
+            {
+                var temperatureAndTintEffect = new TemperatureAndTintEffect
+                {
+                    Source = source
+                };
+                temperatureAndTintEffect.Temperature = -0.6f;
+                temperatureAndTintEffect.Tint = -0.6f;
+
+                return temperatureAndTintEffect;
+            }
+            else if (_filter_index == 6)
+            {
+                var vignetteEffect = new VignetteEffect
+                {
+                    Source = source
+                };
+                vignetteEffect.Color = Color.FromArgb(255, 0xFF, 0xFF, 0xFF);
+                vignetteEffect.Amount = 1.0f;
+
+                return vignetteEffect;
+            }
+            else if (_filter_index == 7)
+            {
+                var embossEffect = new EmbossEffect
+                {
+                    Source = source
+                };
+                embossEffect.Amount = 5;
+                embossEffect.Angle = 0;
+                return embossEffect;
+            }
+            else
+            {
+                return source;
+            }
+        }
         #endregion
+
     }
 }
