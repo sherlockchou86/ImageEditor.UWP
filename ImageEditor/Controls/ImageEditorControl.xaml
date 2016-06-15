@@ -149,7 +149,7 @@
                     <PivotItem Margin="0">
                         <PivotItem.Content>
                             <Border Height="80">
-                                <GridView Margin="5,0,5,-15" SelectionMode="None" Height="80" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                                <GridView Name="WallPapersList" Margin="5,0,5,-15" ItemsSource="{x:Bind WallPapers}" ItemClick="WallPapersList_ItemClick" IsItemClickEnabled="True"  SelectionMode="None" Height="80" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
                                     <GridView.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <ItemsWrapGrid MaximumRowsOrColumns="100">
@@ -158,25 +158,27 @@
                                         </ItemsPanelTemplate>
                                     </GridView.ItemsPanel>
                                     <!--墙纸-->
-                                    <GridViewItem>
-                                        <RelativePanel>
-                                            <StackPanel Padding="2">
-                                                <Image Width="56" Height="62" Stretch="UniformToFill" Source="/Images/default_image.jpg">
+                                    <GridView.ItemTemplate>
+                                        <DataTemplate>
+                                            <RelativePanel>
+                                                <StackPanel Padding="2">
+                                                    <Image Width="56" Height="62" Stretch="UniformToFill" Source="{Binding }">
 
-                                                </Image>
-                                            </StackPanel>
-                                            <Rectangle RelativePanel.AlignBottomWithPanel="True"
+                                                    </Image>
+                                                </StackPanel>
+                                                <Rectangle RelativePanel.AlignBottomWithPanel="True"
                                                        RelativePanel.AlignTopWithPanel="True"
                                                        RelativePanel.AlignLeftWithPanel="True"
                                                        RelativePanel.AlignRightWithPanel="True"
                                                        StrokeThickness="2"
                                                        Fill="#88FFFFFF"
+                                                       Visibility="Collapsed"
                                                        Stroke="Orange"
                                                        >
-
-                                            </Rectangle>
-                                        </RelativePanel>
-                                    </GridViewItem>
+                                                </Rectangle>
+                                            </RelativePanel>
+                                        </DataTemplate>
+                                    </GridView.ItemTemplate>
                                 </GridView>
                             </Border>
                         </PivotItem.Content>

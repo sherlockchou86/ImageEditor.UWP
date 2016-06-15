@@ -23,6 +23,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Shapes;
 using Windows.Storage;
 using Microsoft.Graphics.Canvas.Effects;
+using System.Collections.ObjectModel;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -81,6 +82,20 @@ namespace ImageEditor.Controls
                 OnPropertyChanged("Title");
             }
         }
+
+        private ObservableCollection<string> _wallpapers = new ObservableCollection<string>();
+        public ObservableCollection<string> WallPapers
+        {
+            get
+            {
+                return _wallpapers;
+            }
+            set
+            {
+                _wallpapers = value;
+                OnPropertyChanged("WallPapers");
+            }
+        }
         #endregion
 
         Border border = new Border();
@@ -100,6 +115,7 @@ namespace ImageEditor.Controls
         private void ImageEditorControl_Loaded(object sender, RoutedEventArgs e)
         {
             SetCanvas();
+            LoadWallPapers();
         }
 
         /// <summary>
@@ -387,6 +403,25 @@ namespace ImageEditor.Controls
                 }
                 return;
             }
+            if (MainCommandPanel.SelectedIndex == 2)  //可能是墙纸编辑状态
+            {
+                if(_wall_paperUI != null)
+                {
+                    if ((_wall_paperUI as WallPaperUI).Region.Contains(e.Position))  //移动墙纸
+                    {
+                        _manipulation_type = 3;
+                        _pre_manipulation_position = e.Position;
+                        (_wall_paperUI as WallPaperUI).Editing = true;
+                    }
+                    if ((_wall_paperUI as WallPaperUI).RightBottomRegion.Contains(e.Position) && (_wall_paperUI as WallPaperUI).Editing)  //缩放墙纸
+                    {
+                        _manipulation_type = 4;
+                        _pre_manipulation_position = e.Position;
+                    }
+                    MainCanvas.Invalidate();
+                }
+                return;
+            }
         }
         /// <summary>
         /// 操作画布结束
@@ -416,6 +451,14 @@ namespace ImageEditor.Controls
             if (MainCommandPanel.SelectedIndex == 0)
             {
                 if (_cropUI != null)
+                {
+                    _pre_manipulation_position = null;
+                }
+                return;
+            }
+            if (MainCommandPanel.SelectedIndex == 2)
+            {
+                if (_wall_paperUI != null)
                 {
                     _pre_manipulation_position = null;
                 }
@@ -453,19 +496,19 @@ namespace ImageEditor.Controls
                     MainCanvas.Invalidate();
                 }
             }
-            if (MainCommandPanel.SelectedIndex == 0)
+            if (MainCommandPanel.SelectedIndex == 0)  //剪切
             {
                 if (_cropUI != null && _pre_manipulation_position != null)
                 {
                     var deltaX = e.Position.X - _pre_manipulation_position.Value.X;
                     var deltaY = e.Position.Y - _pre_manipulation_position.Value.Y;
 
-                    if (_manipulation_type == 0)
+                    if (_manipulation_type == 0) //移动
                     {
                         (_cropUI as CropUI).Left += deltaX;
                         (_cropUI as CropUI).Top += deltaY;
                     }
-                    else if(_manipulation_type == 1)
+                    else if(_manipulation_type == 1) //缩放
                     {
                         (_cropUI as CropUI).Width += deltaX;
                         (_cropUI as CropUI).Height += deltaY;
@@ -475,6 +518,27 @@ namespace ImageEditor.Controls
                     MainCanvas.Invalidate();
                 }
                 return;
+            }
+            if (MainCommandPanel.SelectedIndex == 2) //墙纸
+            {
+                if (_wall_paperUI != null && _pre_manipulation_position != null)
+                {
+                    var deltaX = e.Position.X - _pre_manipulation_position.Value.X;
+                    var deltaY = e.Position.Y - _pre_manipulation_position.Value.Y;
+                    if (_manipulation_type == 3)  //移动
+                    {
+                        (_wall_paperUI as WallPaperUI).X += deltaX;
+                        (_wall_paperUI as WallPaperUI).Y += deltaY;
+                    }
+                    else if (_manipulation_type == 4)  //缩放
+                    {
+                        (_wall_paperUI as WallPaperUI).Width += deltaX * 2;
+                        (_wall_paperUI as WallPaperUI).SyncWH();  //只需要设置宽度  高度自动同步
+                    }
+                    _pre_manipulation_position = e.Position;
+
+                    MainCanvas.Invalidate();
+                }
             }
         }
         /// <summary>
@@ -546,13 +610,47 @@ namespace ImageEditor.Controls
             foreach (var item in Filters.Items)
             {
                 (((item as GridViewItem).Content as StackPanel).Children[1] as Border).Background = new SolidColorBrush(Colors.Transparent);
+                ((((item as GridViewItem).Content as StackPanel).Children[1] as Border).Child as TextBlock).Foreground = new SolidColorBrush(Colors.Gray);
             }
             ((e.ClickedItem as StackPanel).Children[1] as Border).Background = new SolidColorBrush(Colors.Orange);
+            (((e.ClickedItem as StackPanel).Children[1] as Border).Child as TextBlock).Foreground = new SolidColorBrush(Colors.White);
 
             _filter_index = int.Parse((e.ClickedItem as StackPanel).Tag.ToString());
 
             MainCanvas.Invalidate();
         }
+        /// <summary>
+        /// 选择墙纸
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void WallPapersList_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            foreach (var item in WallPapersList.Items)
+            {
+                (((WallPapersList.ContainerFromItem(item) as GridViewItem).ContentTemplateRoot as RelativePanel).Children[1] as Rectangle).Visibility = Visibility.Collapsed;
+            }
+
+            (((WallPapersList.ContainerFromItem(e.ClickedItem) as GridViewItem).ContentTemplateRoot as RelativePanel).Children[1] as Rectangle).Visibility = Visibility.Visible;
+
+            //创建墙纸
+            _wall_paperUI = new WallPaperUI() { Editing = true, Height = 100, Width = 100, Image = null, X = 150, Y = 150 };
+            MainCanvas.Invalidate();
+
+            CanvasDevice device = CanvasDevice.GetSharedDevice();
+            var img = await CanvasBitmap.LoadAsync(device, new Uri(e.ClickedItem.ToString()));
+            if (img != null)
+            {
+                if (_wallpapers != null)
+                {
+                    (_wall_paperUI as WallPaperUI).Width = img.Size.Width;
+                    (_wall_paperUI as WallPaperUI).Height = img.Size.Height;
+                    (_wall_paperUI as WallPaperUI).Image = img;
+
+                    MainCanvas.Invalidate();
+                }
+            }
+;        }
         #endregion
 
         #region fields
@@ -565,7 +663,7 @@ namespace ImageEditor.Controls
         private DoodleUI _current_editing_doodleUI;  //当前涂鸦对象
         private CanvasBitmap _image;  //底图
         private Point? _pre_manipulation_position;  //操作起始点
-        private int _manipulation_type = 0; // 0表示移动剪切对象 1表示缩放剪切对象 2表示移动tag
+        private int _manipulation_type = 0; // 0表示移动剪切对象 1表示缩放剪切对象 2表示移动tag 3表示移动墙纸 4表示缩放墙纸
         private IDrawingUI _current_tag; //当前移动的tag
 
         private int _filter_index = 0;  //滤镜模板  0表示无滤镜
@@ -606,6 +704,10 @@ namespace ImageEditor.Controls
                     _current_editing_doodleUI.Draw(graphics); //正在涂鸦对象 在上面
                 }
                 //绘制贴图
+                if (_wall_paperUI != null)
+                {
+                    _wall_paperUI.Draw(graphics);
+                }
                 //绘制Tag
                 if (_tagsUIs != null)
                 {
@@ -765,6 +867,17 @@ namespace ImageEditor.Controls
                 {
                     return false;
                 }
+                //取消剪切  确认剪切  
+            }
+            if (_wall_paperUI != null)
+            {
+                if ((_wall_paperUI as WallPaperUI).Region.Contains(p)) //点击墙纸
+                {
+                    (_wall_paperUI as WallPaperUI).Editing = true;
+                    MainCanvas.Invalidate();
+                    return false;
+                }
+                //取消墙纸
             }
             if (_tagsUIs != null)
             {
@@ -788,6 +901,29 @@ namespace ImageEditor.Controls
             }
             return true;
         }
+        /// <summary>
+        /// 异步从网络位置加载墙纸
+        /// </summary>
+        private async void LoadWallPapers()
+        {
+            var url = "http://files.cnblogs.com/files/xiaozhi_5638/Papers.zip" + "?t="+DateTime.Now.Ticks;
+            var json = await HttpTool.GetJson(url);
+            if (json != null)
+            {
+                var papers = json["papers"].GetArray();
+                var image_url = ""; 
+                foreach (var paper in papers)
+                {
+                    var p =  paper.GetObject();
+                    image_url = p["image_url"].GetString();
+                    if (!String.IsNullOrEmpty(image_url))
+                    {
+                        WallPapers.Add(image_url);
+                    }
+                }
+            }
+        }
+
         #endregion
 
         #region 滤镜特效
