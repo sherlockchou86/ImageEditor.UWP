@@ -16,7 +16,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Name="MainGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -64,7 +64,7 @@
                     <PivotItem Margin="0">
                         <PivotItem.Content>
                             <Border Height="80">
-                                <GridView Width="240" Height="48" SelectionMode="None" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollMode="Auto">
+                                <GridView Width="290" Height="48" SelectionMode="None" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollMode="Auto">
                                     <!--布局命令-->
                                     <GridViewItem Name="LayoutCommand1" Padding="5" Tapped="LayoutCommand_Tapped">
                                         <StackPanel Name="LayoutCommand1_Panel">
@@ -116,6 +116,16 @@
                                             <TextBlock Foreground="Gray" Text="剪切" FontSize="12"></TextBlock>
                                         </StackPanel>
                                     </GridViewItem>
+                                    <GridViewItem Name="LayoutCommand6" Padding="5" Tapped="LayoutCommand_Tapped">
+                                        <StackPanel>
+                                            <SymbolIcon Foreground="Gray" Symbol="OpenFile">
+                                                <SymbolIcon.RenderTransform>
+                                                    <CompositeTransform ScaleX="0.8" ScaleY="0.8"/>
+                                                </SymbolIcon.RenderTransform>
+                                            </SymbolIcon>
+                                            <TextBlock Foreground="Gray" Text="打开" FontSize="12"></TextBlock>
+                                        </StackPanel>
+                                    </GridViewItem>
                                 </GridView>
                             </Border>
                         </PivotItem.Content>
@@ -136,7 +146,7 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Row="0" Grid.Column="0" Foreground="Gray" Text="亮度" FontSize="11" TextAlignment="Center" Margin="5"></TextBlock>
                                     <Slider Name="Slider1" Value="0" Maximum="50" Minimum="-50" Style="{StaticResource CircleSlider}" Grid.Row="0" Grid.Column="1"  Padding="6,5,0,0" ValueChanged="Slider_ValueChanged"></Slider>
-                                    
+
                                     <TextBlock Grid.Row="1" Grid.Column="0" Foreground="Gray" Text="锐化" FontSize="11" TextAlignment="Center" Margin="5"></TextBlock>
                                     <Slider Name="Slider2" Value="0" Style="{StaticResource CircleSlider}" Grid.Row="1" Grid.Column="1"  Padding="6,5,0,0" ValueChanged="Slider_ValueChanged"></Slider>
 

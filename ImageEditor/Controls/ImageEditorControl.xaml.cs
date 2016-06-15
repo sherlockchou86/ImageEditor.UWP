@@ -588,6 +588,10 @@ namespace ImageEditor.Controls
                     _cropUI = new CropUI() { Top = 20, Left = 20, Height = 100, Width = 100, DrawColor = Colors.Orange };
                 }
             }
+            else if (layout_command == LayoutCommand6)  //重选底图
+            {
+                SelectImage();
+            }
             MainCanvas.Invalidate();
             SetCanvas();
         }
@@ -863,21 +867,36 @@ namespace ImageEditor.Controls
         {
             if (_cropUI != null)
             {
+                if ((_cropUI as CropUI).LeftTopRegion.Contains(p))  //取消
+                {
+                    _cropUI = null;
+                    MainCanvas.Invalidate();
+                    return false;
+                }
+                if ((_cropUI as CropUI).RightTopRegion.Contains(p))  //OK
+                {
+                    //
+                    return false;
+                }
                 if ((_cropUI as CropUI).Region.Contains(p))  //点击的是 剪切对象 区域
                 {
                     return false;
                 }
-                //取消剪切  确认剪切  
             }
             if (_wall_paperUI != null)
             {
-                if ((_wall_paperUI as WallPaperUI).Region.Contains(p)) //点击墙纸
+                if((_wall_paperUI as WallPaperUI).RightTopRegion.Contains(p)) //取消墙纸
                 {
-                    (_wall_paperUI as WallPaperUI).Editing = true;
+                    _wall_paperUI = null;
                     MainCanvas.Invalidate();
                     return false;
                 }
-                //取消墙纸
+                if ((_wall_paperUI as WallPaperUI).Region.Contains(p)) //点击墙纸
+                {
+                    (_wall_paperUI as WallPaperUI).Editing = !(_wall_paperUI as WallPaperUI).Editing;
+                    MainCanvas.Invalidate();
+                    return false;
+                }
             }
             if (_tagsUIs != null)
             {
@@ -899,6 +918,16 @@ namespace ImageEditor.Controls
                     }
                 }
             }
+            //点击空白区域  所有元素失去编辑（选中）状态
+            if (_wall_paperUI != null)
+            {
+                (_wall_paperUI as WallPaperUI).Editing = false;
+            }
+            if (_tagsUIs != null)
+            {
+                _tagsUIs.ForEach((tag) => { (tag as TagUI).ShowCloseBtn = false; });
+            }
+            
             return true;
         }
         /// <summary>
@@ -923,7 +952,37 @@ namespace ImageEditor.Controls
                 }
             }
         }
+        /// <summary>
+        /// 选择底图
+        /// </summary>
+        private void SelectImage()
+        {
+            Popup pop = new Popup();
 
+            Border bod = new Border();
+            bod.Background = new SolidColorBrush(Color.FromArgb(100, 0x00, 0x00, 0x00));
+            bod.Width = this.Width;
+            bod.Height = this.Height;
+
+            MainGrid.Children.Add(pop);
+            Grid.SetRow(pop, 0);
+            Grid.SetRowSpan(pop, 3);
+
+            var imageSelector = new ImageSeletorControl();
+            imageSelector.Height = 175;
+            imageSelector.Width = bod.Width;
+            
+            bod.Child = imageSelector;
+            imageSelector.VerticalAlignment = VerticalAlignment.Bottom;
+             
+            bod.Tapped += (sender, e) =>
+              {
+                  pop.IsOpen = false;
+                  MainGrid.Children.Remove(pop);
+              };
+            pop.Child = bod;
+            pop.IsOpen = true;
+        }
         #endregion
 
         #region 滤镜特效

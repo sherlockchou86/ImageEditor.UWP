@@ -98,6 +98,9 @@
     <Compile Include="Controls\ImageEditorControl.xaml.cs">
       <DependentUpon>ImageEditorControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ImageSeletorControl.xaml.cs">
+      <DependentUpon>ImageSeletorControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TagInsertControl.xaml.cs">
       <DependentUpon>TagInsertControl.xaml</DependentUpon>
     </Compile>
@@ -137,6 +140,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Controls\ImageEditorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ImageSeletorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
