@@ -975,11 +975,23 @@ namespace ImageEditor.Controls
             bod.Child = imageSelector;
             imageSelector.VerticalAlignment = VerticalAlignment.Bottom;
              
-            bod.Tapped += (sender, e) =>
+            bod.Tapped += (sender, e) =>  //点击空白区域关闭popup
               {
                   pop.IsOpen = false;
                   MainGrid.Children.Remove(pop);
               };
+
+            imageSelector.ImageSelected += async (image_file) =>  //选择image
+                  {
+                      CanvasDevice cd = CanvasDevice.GetSharedDevice();
+                      var stream = await image_file.OpenAsync(FileAccessMode.Read);
+                      var tmp = await CanvasBitmap.LoadAsync(cd, stream);
+                      if (tmp != null)
+                      {
+                          _image = tmp;
+                          MainCanvas.Invalidate();
+                      }
+                  };
             pop.Child = bod;
             pop.IsOpen = true;
         }

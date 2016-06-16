@@ -24,7 +24,7 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <StackPanel Padding="5" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-            <GridView Name="ImageList" Height="100" Margin="0,0,0,-10" ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+            <GridView Name="ImageList" ItemsSource="{x:Bind Images}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="ImageList_ItemClick" Height="100" Margin="0,0,0,-15" ScrollViewer.HorizontalScrollMode="Auto"  ScrollViewer.HorizontalScrollBarVisibility="Hidden"  ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden">
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid MaximumRowsOrColumns="100">
@@ -32,48 +32,36 @@
                         </ItemsWrapGrid>
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
-                <GridViewItem>
-                    <StackPanel Margin="2">
-                        <Image Width="80" Stretch="UniformToFill" Source="ms-appx:///Images/default_image.jpg"></Image>
-                    </StackPanel>
-                </GridViewItem>
-                <GridViewItem>
-                    <StackPanel Margin="2">
-                        <Image Width="80" Stretch="UniformToFill" Source="ms-appx:///Images/default_image.jpg"></Image>
-                    </StackPanel>
-                </GridViewItem>
-                <GridViewItem>
-                    <StackPanel Margin="2">
-                        <Image Width="80" Stretch="UniformToFill" Source="ms-appx:///Images/default_image.jpg"></Image>
-                    </StackPanel>
-                </GridViewItem>
-                <GridViewItem>
-                    <StackPanel Margin="2">
-                        <Image Width="80" Stretch="UniformToFill" Source="ms-appx:///Images/default_image.jpg"></Image>
-                    </StackPanel>
-                </GridViewItem>
-                <GridViewItem>
-                    <StackPanel Margin="2">
-                        <Image Width="80" Stretch="UniformToFill" Source="ms-appx:///Images/default_image.jpg"></Image>
-                    </StackPanel>
-                </GridViewItem>
-                <GridViewItem>
-                    <StackPanel Margin="2">
-                        <Image Width="80" Stretch="UniformToFill" Source="ms-appx:///Images/default_image.jpg"></Image>
-                    </StackPanel>
-                </GridViewItem>
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="2">
+                            <Image Width="80" Height="80" Stretch="UniformToFill" Source="{Binding }">
+                            </Image>
+                        </StackPanel>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
             </GridView>
         </StackPanel>
-        <StackPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Orientation="Horizontal" Padding="10">
+        <StackPanel Grid.Row="1" Grid.Column="0" Name="FromCamera" Tapped="FromCamera_Tapped" HorizontalAlignment="Center" Orientation="Horizontal" Padding="10">
             <SymbolIcon Symbol="Camera" Foreground="Gray"></SymbolIcon>
             <TextBlock Text="相机" Margin="10,0,0,0" Foreground="Gray"></TextBlock>
         </StackPanel>
-        <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Orientation="Horizontal" Padding="10">
-            <SymbolIcon Symbol="Document" Foreground="Gray"/>
+        <StackPanel Name="FromAlbum" Grid.Row="1" Grid.Column="1" Tapped="FromAlbum_Tapped"  HorizontalAlignment="Center" Orientation="Horizontal" Padding="10">
+            <SymbolIcon Symbol="Contact2" Foreground="Gray"/>
             <TextBlock Text="相册" Margin="10,0,0,1" Foreground="Gray"></TextBlock>
         </StackPanel>
-        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Padding="5" Background="LightGray" HorizontalAlignment="Stretch">
-            <TextBlock Text="关闭" TextAlignment="Center"></TextBlock>
+        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Padding="10" Background="LightGray" HorizontalAlignment="Stretch">
+            <TextBlock Name="CloseBtn" Text="关闭" TextAlignment="Center" Tapped="CloseBtn_Tapped"></TextBlock>
+        </StackPanel>
+        
+        <!--提示信息-->
+        <ProgressRing Name="WaitingRing" Grid.Row="0" Grid.ColumnSpan="2" IsActive="False">
+
+        </ProgressRing>
+        <StackPanel Name="EmptyTip" Grid.ColumnSpan="2" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+            <SymbolIcon Symbol="Document" Foreground="Orange"/>
+            <TextBlock Text="空空如也..." Foreground="Orange" Margin="5,0,0,0"  HorizontalAlignment="Center">
+            </TextBlock>
         </StackPanel>
     </Grid>
 </UserControl>

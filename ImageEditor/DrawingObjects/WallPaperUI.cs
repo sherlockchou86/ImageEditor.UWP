@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Geometry;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml.Media.Imaging;
@@ -82,14 +83,14 @@ namespace ImageEditor.DrawingObjects
             }
             else
             {
-                graphics.DrawText("loading...", (float)X - 10, (float)Y - 2, Colors.Orange, new Microsoft.Graphics.Canvas.Text.CanvasTextFormat() { FontSize = 11 });
+                graphics.DrawText("loading...", (float)X - 12, (float)Y - 2, Colors.Orange, new Microsoft.Graphics.Canvas.Text.CanvasTextFormat() { FontSize = 11 });
             }
 
             if (Editing)
             {
-                graphics.DrawRectangle(new Rect(X - Width / 2 - 2, Y - Height / 2 - 2, Width + 4, Height + 4), Windows.UI.Colors.Orange);
+                graphics.DrawRectangle(new Rect(X - Width / 2 - 2, Y - Height / 2 - 2, Width + 4, Height + 4), Windows.UI.Colors.Orange, 0.5f, new CanvasStrokeStyle() { DashStyle = CanvasDashStyle.DashDot });
                 graphics.FillCircle((float)(X + Width / 2 + 2), (float)(Y - Height / 2 - 2), 8, Colors.Orange);
-                graphics.FillCircle((float)(X + Width / 2 + 2), (float)(Y + Height / 2 - 2), 8, Colors.Orange);
+                graphics.FillCircle((float)(X + Width / 2 + 2), (float)(Y + Height / 2 + 2), 8, Colors.Orange);
             }
         }
     }
