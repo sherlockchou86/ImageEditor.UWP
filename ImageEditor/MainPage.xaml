@@ -8,6 +8,8 @@
     mc:Ignorable="d">
 
     <Grid DoubleTapped="Grid_DoubleTapped" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+        <Image Name="image" Stretch="None">
+            
+        </Image>
     </Grid>
 </Page>

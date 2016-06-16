@@ -24,9 +24,9 @@
         </Grid.RowDefinitions>
         <!--title行-->
         <RelativePanel Grid.Row="0" Background="Orange" Padding="10">
-            <TextBlock Text="{x:Bind LeftButtonText}" FontSize="15" Foreground="White" RelativePanel.AlignLeftWithPanel="True"></TextBlock>
+            <TextBlock Text="{x:Bind LeftButtonText}" Name="CancelBtn" Tapped="CancelBtn_Tapped"  FontSize="15" Foreground="White" RelativePanel.AlignLeftWithPanel="True"></TextBlock>
             <TextBlock Text="{x:Bind Title}" FontSize="17" Foreground="White" RelativePanel.AlignHorizontalCenterWithPanel="True"></TextBlock>
-            <TextBlock Text="{x:Bind RightButtonText}" FontSize="15" Foreground="White" RelativePanel.AlignRightWithPanel="True"></TextBlock>
+            <TextBlock Text="{x:Bind RightButtonText}" Name="OKBtn" Tapped="OKBtn_Tapped" FontSize="15" Foreground="White" RelativePanel.AlignRightWithPanel="True"></TextBlock>
         </RelativePanel>
         <!--工作区-->
         <RelativePanel Grid.Row="1" Name="MainWorkSapce">

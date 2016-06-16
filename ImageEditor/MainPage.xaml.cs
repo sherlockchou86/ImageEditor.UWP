@@ -41,6 +41,11 @@ namespace ImageEditor
             {
                 ImageEditorControl editor = new ImageEditorControl();
                 editor.Show(f);
+
+                editor.ImageEditedCompleted += (image_edited) =>
+                  {
+                      image.Source = image_edited;
+                  };
             }
         }
     }

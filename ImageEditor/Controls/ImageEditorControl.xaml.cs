@@ -24,6 +24,7 @@ using Windows.UI.Xaml.Shapes;
 using Windows.Storage;
 using Microsoft.Graphics.Canvas.Effects;
 using System.Collections.ObjectModel;
+using Windows.Storage.Streams;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -31,6 +32,7 @@ namespace ImageEditor.Controls
 {
     public sealed partial class ImageEditorControl : UserControl, INotifyPropertyChanged
     {
+        public event ImageEditedCompletedEventHandler ImageEditedCompleted;
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string property_name)
@@ -163,7 +165,7 @@ namespace ImageEditor.Controls
             popup.IsOpen = true;
         }
         /// <summary>
-        /// 显示编辑器（带底图参数）
+        /// 显示编辑器（带local底图参数）
         /// </summary>
         /// <param name="image"></param>
         public async void Show(StorageFile image)
@@ -655,6 +657,44 @@ namespace ImageEditor.Controls
                 }
             }
 ;        }
+
+        /// <summary>
+        /// 点击取消
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CancelBtn_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (popup != null)
+            {
+                popup.IsOpen = false;
+            }
+        }
+        /// <summary>
+        /// 点击确定
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void OKBtn_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var img = GetDrawings(false);
+            if (img != null)
+            {
+                IRandomAccessStream stream = new InMemoryRandomAccessStream();
+                await img.SaveAsync(stream, CanvasBitmapFileFormat.Jpeg);
+                BitmapImage result = new BitmapImage();
+                stream.Seek(0);
+                await result.SetSourceAsync(stream);
+                if(ImageEditedCompleted != null)
+                {
+                    ImageEditedCompleted(result);
+                }
+                if(popup != null)
+                {
+                    popup.IsOpen = false;
+                }
+            }
+        }
         #endregion
 
         #region fields
@@ -1135,6 +1175,7 @@ namespace ImageEditor.Controls
             }
         }
         #endregion
-
     }
+
+    public delegate void ImageEditedCompletedEventHandler(BitmapImage image);
 }
