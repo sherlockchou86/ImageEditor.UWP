@@ -91,7 +91,7 @@ namespace ImageEditor.DrawingObjects
             var pathBuilder = new CanvasPathBuilder(graphics);
 
 
-            if (w > Bound.Width)  //超出画布边界
+            if (w > Bound.Width * scale)  //超出画布边界
             {
                 pathBuilder.BeginFigure((float)x - 5 * scale, (float)y);
                 pathBuilder.AddLine((float)x - 5 * scale - 6 *scale, (float)y - (float)height / 2);
