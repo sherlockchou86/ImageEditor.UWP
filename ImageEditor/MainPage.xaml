@@ -16,7 +16,7 @@
             <Button Name="EditLocal" Tapped="EditLocal_Tapped"  Content="Edit Local Image"></Button>
             <Button Name="EditRemote" Tapped="EditRemote_Tapped" Margin="10,0,0,0" Content="Edit Remote Image"></Button>
         </StackPanel>
-        <Image Grid.Row="1" Name="image" Stretch="Uniform">
+        <Image Grid.Row="1" Name="image" Stretch="None">
             
         </Image>
     </Grid>

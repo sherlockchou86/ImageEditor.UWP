@@ -81,34 +81,34 @@ namespace ImageEditor.DrawingObjects
                     //TagText = "↓" + TagText;
                 }
             }
-            var ctFormat = new CanvasTextFormat { FontSize = 11.0f, WordWrapping = CanvasWordWrapping.NoWrap, FontFamily="微软雅黑" };
+            var ctFormat = new CanvasTextFormat { FontSize = 11.0f * scale, WordWrapping = CanvasWordWrapping.NoWrap, FontFamily="微软雅黑" };
             var ctLayout = new CanvasTextLayout(graphics, TagText, ctFormat, 0.0f, 0.0f);
             //字体占用高度、宽度
-            var width = ctLayout.DrawBounds.Width + 10;
-            var height = ctLayout.DrawBounds.Height + 12;
+            var width = ctLayout.DrawBounds.Width + 10 * scale;
+            var height = ctLayout.DrawBounds.Height + 12 * scale;
 
-            var w = x + width + 10 + height;
+            var w = x + width + 10 * scale + height;
             var pathBuilder = new CanvasPathBuilder(graphics);
 
 
             if (w > Bound.Width)  //超出画布边界
             {
-                pathBuilder.BeginFigure((float)x - 5, (float)y);
-                pathBuilder.AddLine((float)x - 5 - 6, (float)y - (float)height / 2);
-                pathBuilder.AddLine((float)x - (float)width - 5 - 6, (float)y - (float)height / 2);
-                pathBuilder.AddLine((float)x - (float)width - 5 - 6, (float)y + (float)height / 2);
-                pathBuilder.AddLine((float)x - 5 - 6, (float)y + (float)height / 2);
+                pathBuilder.BeginFigure((float)x - 5 * scale, (float)y);
+                pathBuilder.AddLine((float)x - 5 * scale - 6 *scale, (float)y - (float)height / 2);
+                pathBuilder.AddLine((float)x - (float)width - 5 * scale - 6 * scale, (float)y - (float)height / 2);
+                pathBuilder.AddLine((float)x - (float)width - 5 * scale - 6 * scale, (float)y + (float)height / 2);
+                pathBuilder.AddLine((float)x - 5 * scale - 6 * scale, (float)y + (float)height / 2);
 
                 pathBuilder.EndFigure(CanvasFigureLoop.Closed);
 
                 var geometry = CanvasGeometry.CreatePath(pathBuilder);
 
                 graphics.FillGeometry(geometry, color2);
-                graphics.DrawText(TagText, (float)x - (float)width - 5 - 6 + 5, (float)y - (float)height / 2 + 4, Colors.White, ctFormat);
+                graphics.DrawText(TagText, (float)x - (float)width - 5 * scale - 6 * scale + 5 * scale, (float)y - (float)height / 2 + 4 * scale, Colors.White, ctFormat);
 
 
-                _region = new Rect((float)x - (float)width - 5 - 6, (float)y - (float)height / 2, width, height);
-                _close_region = new Rect((float)x - (float)width - 5 - 6 - height, (float)y - (float)height / 2, height, height);
+                _region = new Rect((float)x - (float)width - 5 * scale - 6 * scale, (float)y - (float)height / 2, width, height);
+                _close_region = new Rect((float)x - (float)width - 5 * scale - 6 * scale - height, (float)y - (float)height / 2, height, height);
 
                 if (ShowCloseBtn && scale == 1) //显示关闭按钮 且没有缩放
                 {
@@ -119,21 +119,21 @@ namespace ImageEditor.DrawingObjects
             }
             else
             {
-                pathBuilder.BeginFigure((float)x + 5, (float)y);
-                pathBuilder.AddLine((float)x + 5 + 6, (float)y - (float)height / 2);
-                pathBuilder.AddLine((float)x + (float)width + 5 + 6, (float)y - (float)height / 2);
-                pathBuilder.AddLine((float)x + (float)width + 5 + 6, (float)y + (float)height / 2);
-                pathBuilder.AddLine((float)x + 5 + 6, (float)y + (float)height / 2);
+                pathBuilder.BeginFigure((float)x + 5 * scale, (float)y);
+                pathBuilder.AddLine((float)x + 5 * scale + 6 * scale, (float)y - (float)height / 2);
+                pathBuilder.AddLine((float)x + (float)width + 5 * scale + 6 * scale, (float)y - (float)height / 2);
+                pathBuilder.AddLine((float)x + (float)width + 5 * scale + 6 * scale, (float)y + (float)height / 2);
+                pathBuilder.AddLine((float)x + 5 * scale + 6 + scale, (float)y + (float)height / 2);
 
                 pathBuilder.EndFigure(CanvasFigureLoop.Closed);
 
                 var geo = CanvasGeometry.CreatePath(pathBuilder);
 
                 graphics.FillGeometry(geo, color2);
-                graphics.DrawText(TagText, (float)x + 5 + 4 + 5, (float)y - (float)height / 2 + 4, Colors.White, ctFormat);
+                graphics.DrawText(TagText, (float)x + 5 * scale + 4 * scale + 5 * scale, (float)y - (float)height / 2 + 4 * scale, Colors.White, ctFormat);
 
-                _region = new Rect((float)x + 5 + 6, (float)y - (float)height / 2, width, height);
-                _close_region = new Rect((float)x + (float)width + 5 + 6, (float)y - (float)height / 2, height, height);
+                _region = new Rect((float)x + 5 * scale + 6 * scale, (float)y - (float)height / 2, width, height);
+                _close_region = new Rect((float)x + (float)width + 5 * scale + 6 * scale, (float)y - (float)height / 2, height, height);
 
                 if (ShowCloseBtn && scale == 1) //显示关闭按钮  且 没有缩放
                 {
