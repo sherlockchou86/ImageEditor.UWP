@@ -75,18 +75,18 @@ namespace ImageEditor.DrawingObjects
         /// 绘制
         /// </summary>
         /// <param name="graphics"></param>
-        public void Draw(CanvasDrawingSession graphics)
+        public void Draw(CanvasDrawingSession graphics, float scale)
         {
             if (Image != null)
             {
-                graphics.DrawImage(Image, new Rect(X - (Width / 2), Y - (Height / 2), Width, Height));
+                graphics.DrawImage(Image, new Rect((X - (Width / 2)) * scale, (Y - (Height / 2)) * scale, Width * scale, Height * scale));
             }
             else
             {
-                graphics.DrawText("loading...", (float)X - 12, (float)Y - 2, Colors.Orange, new Microsoft.Graphics.Canvas.Text.CanvasTextFormat() { FontSize = 11 });
+                graphics.DrawText("loading...", ((float)X - 12) * scale, ((float)Y - 2) * scale, Colors.Orange, new Microsoft.Graphics.Canvas.Text.CanvasTextFormat() { FontSize = 11 });
             }
 
-            if (Editing)
+            if (Editing && scale == 1) //如果是编辑状态 且 没有缩放
             {
                 graphics.DrawRectangle(new Rect(X - Width / 2 - 2, Y - Height / 2 - 2, Width + 4, Height + 4), Windows.UI.Colors.Orange, 0.5f, new CanvasStrokeStyle() { DashStyle = CanvasDashStyle.DashDot });
                 graphics.FillCircle((float)(X + Width / 2 + 2), (float)(Y - Height / 2 - 2), 8, Colors.Orange);

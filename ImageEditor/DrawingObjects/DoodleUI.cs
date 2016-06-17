@@ -35,13 +35,13 @@ namespace ImageEditor.DrawingObjects
                 return _points;
             }
         }
-        public void Draw(CanvasDrawingSession graphics)
+        public void Draw(CanvasDrawingSession graphics, float scale)
         {
             if (_points != null && _points.Count>0)
             {
                 if (_points.Count == 1)
                 {
-                    graphics.DrawLine((float)_points[0].X, (float)_points[0].Y, (float)_points[0].X, (float)_points[0].Y, DrawingColor, DrawingSize);
+                    graphics.DrawLine((float)_points[0].X * scale, (float)_points[0].Y * scale, (float)_points[0].X * scale, (float)_points[0].Y * scale, DrawingColor, DrawingSize * scale);
                 }
                 else
                 {
@@ -51,7 +51,7 @@ namespace ImageEditor.DrawingObjects
                     style.EndCap = CanvasCapStyle.Round;
                     for (int i = 0; i < _points.Count - 1; ++i)
                     {
-                        graphics.DrawLine((float)_points[i].X, (float)_points[i].Y, (float)_points[i + 1].X, (float)_points[i + 1].Y, DrawingColor, DrawingSize, style);
+                        graphics.DrawLine((float)_points[i].X * scale, (float)_points[i].Y * scale, (float)_points[i + 1].X * scale, (float)_points[i + 1].Y * scale, DrawingColor, DrawingSize * scale, style);
 
                     }
                 }

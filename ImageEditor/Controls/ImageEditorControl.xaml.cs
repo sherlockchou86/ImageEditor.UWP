@@ -123,7 +123,7 @@ namespace ImageEditor.Controls
         /// <summary>
         /// 显示编辑器
         /// </summary>
-        public void Show()
+        private void Show()
         {
             var height = ApplicationView.GetForCurrentView().VisibleBounds.Height;
             var width = ApplicationView.GetForCurrentView().VisibleBounds.Width;
@@ -188,6 +188,14 @@ namespace ImageEditor.Controls
             {
 
             }
+        }
+        /// <summary>
+        /// 显示编辑器（带底图片url）
+        /// </summary>
+        /// <param name="uri"></param>
+        public async void Show(Uri uri)
+        {
+
         }
         /// <summary>
         /// PC窗体大小改变时，保证居中显示
@@ -675,25 +683,9 @@ namespace ImageEditor.Controls
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void OKBtn_Tapped(object sender, TappedRoutedEventArgs e)
+        private void OKBtn_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            var img = GetDrawings(false);
-            if (img != null)
-            {
-                IRandomAccessStream stream = new InMemoryRandomAccessStream();
-                await img.SaveAsync(stream, CanvasBitmapFileFormat.Jpeg);
-                BitmapImage result = new BitmapImage();
-                stream.Seek(0);
-                await result.SetSourceAsync(stream);
-                if(ImageEditedCompleted != null)
-                {
-                    ImageEditedCompleted(result);
-                }
-                if(popup != null)
-                {
-                    popup.IsOpen = false;
-                }
-            }
+            GenerateResultImage();
         }
         #endregion
 
@@ -727,40 +719,54 @@ namespace ImageEditor.Controls
         /// <returns></returns>
         private CanvasRenderTarget GetDrawings(bool edit)
         {
+            double w, h;  //画布大小
+            if (edit)  //编辑状态
+            {
+                w = MainCanvas.ActualWidth;
+                h = MainCanvas.ActualHeight;
+            }
+            else  //最终生成图片  有一定的scale
+            {
+                Rect des = GetImageDrawingRect();
+
+                w = (_image.Size.Width / des.Width) * MainCanvas.Width;
+                h = (_image.Size.Height / des.Height) * MainCanvas.Height;
+            }
+            var scale = edit ? 1 : w / MainCanvas.Width;  //缩放比例
+
             CanvasDevice device = CanvasDevice.GetSharedDevice();
-            CanvasRenderTarget target = new CanvasRenderTarget(device, (float)MainCanvas.ActualWidth, (float)MainCanvas.ActualHeight, 96);
+            CanvasRenderTarget target = new CanvasRenderTarget(device, (float)w, (float)h, 96);
             using (CanvasDrawingSession graphics = target.CreateDrawingSession())
             {
                 //绘制背景
                 graphics.Clear(_back_color);
 
                 //绘制底图
-                DrawBackImage(graphics);
+                DrawBackImage(graphics, scale);
                 //绘制涂鸦
-
                 if (_doodleUIs != null && _doodleUIs.Count > 0)
                 {
                     var list = _doodleUIs.ToList();list.Reverse();
-                    list.ForEach((d) => { d.Draw(graphics); });
+                    list.ForEach((d) => { d.Draw(graphics, (float)scale); });
                 }
                 if (_current_editing_doodleUI != null)
                 {
-                    _current_editing_doodleUI.Draw(graphics); //正在涂鸦对象 在上面
+                    _current_editing_doodleUI.Draw(graphics, (float)scale); //正在涂鸦对象 在上面
                 }
                 //绘制贴图
                 if (_wall_paperUI != null)
                 {
-                    _wall_paperUI.Draw(graphics);
+                    _wall_paperUI.Draw(graphics, (float)scale);
                 }
                 //绘制Tag
                 if (_tagsUIs != null)
                 {
-                    _tagsUIs.ForEach((t) => { t.Draw(graphics); });
+                    _tagsUIs.ForEach((t) => { t.Draw(graphics, (float)scale); });
                 }
                 //绘制Crop裁剪工具
-                if (_cropUI != null)
+                if (_cropUI != null && edit)
                 {
-                    _cropUI.Draw(graphics);
+                    _cropUI.Draw(graphics, (float)scale);
                 }
             }
 
@@ -830,59 +836,16 @@ namespace ImageEditor.Controls
         /// 绘制底图
         /// </summary>
         /// <param name="graphics"></param>
-        private void DrawBackImage(CanvasDrawingSession graphics)
+        /// <param name="scale"></param>
+        private void DrawBackImage(CanvasDrawingSession graphics, double scale)
         {
             if (_image != null)
             {
-                Rect des;
-
-                var image_w = _image.Size.Width;
-                var image_h = _image.Size.Height;
-
-                if (_stretch == Stretch.Uniform)
-                {
-                    var w = MainCanvas.Width - 20;
-                    var h = MainCanvas.Height - 20;
-                    if (image_w / image_h > w / h)
-                    {
-                        var left = 10;
-
-                        var width = w;
-                        var height = (image_h / image_w) * width;
-
-                        var top = (h - height) / 2 + 10;
-
-                        des = new Rect(left, top, width, height);
-                    }
-                    else
-                    {
-                        var top = 10;
-                        var height = h;
-                        var width = (image_w / image_h) * height;
-                        var left = (w - width) / 2 + 10;
-                        des = new Rect(left, top, width, height);
-                    }
-                }
-                else
-                {
-                    var w = MainCanvas.Width;
-                    var h = MainCanvas.Height;
-                    var left = 0;
-                    var top = 0;
-                    if (image_w / image_h > w / h)
-                    {
-                        var height = h;
-                        var width = (image_w / image_h) * height;
-                        des = new Rect(left, top, width, height);
-                    }
-                    else
-                    {
-                        var width = w;
-                        var height = (image_h / image_w) * width;
-
-                        des = new Rect(left, top, width, height);
-                    }
-                }
+                Rect des = GetImageDrawingRect();
+                des.X *= scale;
+                des.Y *= scale;
+                des.Width *= scale;
+                des.Height *= scale;
                 // 滤镜特效
 
                 //亮度
@@ -1034,6 +997,86 @@ namespace ImageEditor.Controls
                   };
             pop.Child = bod;
             pop.IsOpen = true;
+        }
+        /// <summary>
+        /// 生成最终结果
+        /// </summary>
+        private async void GenerateResultImage()
+        {
+            var img = GetDrawings(false);
+            if (img != null)
+            {
+                IRandomAccessStream stream = new InMemoryRandomAccessStream();
+                await img.SaveAsync(stream, CanvasBitmapFileFormat.Jpeg);
+                BitmapImage result = new BitmapImage();
+                stream.Seek(0);
+                await result.SetSourceAsync(stream);
+                if (ImageEditedCompleted != null)
+                {
+                    ImageEditedCompleted(result);
+                }
+                if (popup != null)
+                {
+                    popup.IsOpen = false;
+                }
+            }
+        }
+        /// <summary>
+        /// 底图绘制区域
+        /// </summary>
+        /// <returns></returns>
+        private Rect GetImageDrawingRect()
+        {
+            Rect des;
+
+            var image_w = _image.Size.Width;
+            var image_h = _image.Size.Height;
+
+            if (_stretch == Stretch.Uniform)
+            {
+                var w = MainCanvas.Width - 20;
+                var h = MainCanvas.Height - 20;
+                if (image_w / image_h > w / h)
+                {
+                    var left = 10;
+
+                    var width = w;
+                    var height = (image_h / image_w) * width;
+
+                    var top = (h - height) / 2 + 10;
+
+                    des = new Rect(left, top, width, height);
+                }
+                else
+                {
+                    var top = 10;
+                    var height = h;
+                    var width = (image_w / image_h) * height;
+                    var left = (w - width) / 2 + 10;
+                    des = new Rect(left, top, width, height);
+                }
+            }
+            else
+            {
+                var w = MainCanvas.Width;
+                var h = MainCanvas.Height;
+                var left = 0;
+                var top = 0;
+                if (image_w / image_h > w / h)
+                {
+                    var height = h;
+                    var width = (image_w / image_h) * height;
+                    des = new Rect(left, top, width, height);
+                }
+                else
+                {
+                    var width = w;
+                    var height = (image_h / image_w) * width;
+
+                    des = new Rect(left, top, width, height);
+                }
+            }
+            return des;
         }
         #endregion
 

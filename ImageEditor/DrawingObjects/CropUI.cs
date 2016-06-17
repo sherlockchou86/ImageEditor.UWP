@@ -75,7 +75,7 @@ namespace ImageEditor.DrawingObjects
         {
             get; set;
         }
-        public void Draw(CanvasDrawingSession graphics)
+        public void Draw(CanvasDrawingSession graphics, float scale)
         {
             var stickness = 1;
             var radius = 8;

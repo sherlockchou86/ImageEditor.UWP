@@ -9,6 +9,6 @@ namespace ImageEditor.DrawingObjects
 {
     interface IDrawingUI
     {
-        void Draw(CanvasDrawingSession graphics);
+        void Draw(CanvasDrawingSession graphics, float scale);
     }
 }
