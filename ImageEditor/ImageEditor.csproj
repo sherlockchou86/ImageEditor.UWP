@@ -125,6 +125,15 @@
   <ItemGroup>
     <Content Include="Images\default_back.png" />
     <Content Include="Images\default_image.jpg" />
+    <Content Include="Images\filters\filter0.png" />
+    <Content Include="Images\filters\filter1.png" />
+    <Content Include="Images\filters\filter2.png" />
+    <Content Include="Images\filters\filter3.png" />
+    <Content Include="Images\filters\filter4.png" />
+    <Content Include="Images\filters\filter5.png" />
+    <Content Include="Images\filters\filter6.png" />
+    <Content Include="Images\filters\filter7.png" />
+    <Content Include="Images\filters\filter8.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

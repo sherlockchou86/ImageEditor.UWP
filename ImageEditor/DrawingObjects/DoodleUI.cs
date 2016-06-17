@@ -7,6 +7,7 @@ using Microsoft.Graphics.Canvas;
 using Windows.UI;
 using Windows.Foundation;
 using Microsoft.Graphics.Canvas.Geometry;
+using Microsoft.Graphics.Canvas.Brushes;
 
 namespace ImageEditor.DrawingObjects
 {
@@ -35,13 +36,36 @@ namespace ImageEditor.DrawingObjects
                 return _points;
             }
         }
+        CanvasBitmap _brush_image;
+        public async void InitImageBrush()
+        {
+            if (DrawingColor == Colors.Transparent)
+            {
+                if (_brush_image == null)
+                {
+                    CanvasDevice cd = CanvasDevice.GetSharedDevice();
+                    _brush_image = await CanvasBitmap.LoadAsync(cd, new Uri("ms-appx:///Images/default_back.png"));
+                }
+            }
+        }
         public void Draw(CanvasDrawingSession graphics, float scale)
         {
             if (_points != null && _points.Count>0)
             {
+                ICanvasBrush brush;
+                if (DrawingColor == Colors.Transparent)
+                {
+                    if (_brush_image == null)
+                        return;
+                    brush = new CanvasImageBrush(graphics, _brush_image);
+                }
+                else
+                {
+                    brush = new CanvasSolidColorBrush(graphics, DrawingColor);
+                }
                 if (_points.Count == 1)
                 {
-                    graphics.DrawLine((float)_points[0].X * scale, (float)_points[0].Y * scale, (float)_points[0].X * scale, (float)_points[0].Y * scale, DrawingColor, DrawingSize * scale);
+                    graphics.DrawLine((float)_points[0].X * scale, (float)_points[0].Y * scale, (float)_points[0].X * scale, (float)_points[0].Y * scale, brush, DrawingSize * scale);
                 }
                 else
                 {
@@ -51,7 +75,7 @@ namespace ImageEditor.DrawingObjects
                     style.EndCap = CanvasCapStyle.Round;
                     for (int i = 0; i < _points.Count - 1; ++i)
                     {
-                        graphics.DrawLine((float)_points[i].X * scale, (float)_points[i].Y * scale, (float)_points[i + 1].X * scale, (float)_points[i + 1].Y * scale, DrawingColor, DrawingSize * scale, style);
+                        graphics.DrawLine((float)_points[i].X * scale, (float)_points[i].Y * scale, (float)_points[i + 1].X * scale, (float)_points[i + 1].Y * scale, brush, DrawingSize * scale, style);
 
                     }
                 }

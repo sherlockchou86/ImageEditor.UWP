@@ -28,8 +28,7 @@ namespace ImageEditor
         {
             this.InitializeComponent();
         }
-
-        private async void Grid_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        private async void EditLocal_Tapped(object sender, TappedRoutedEventArgs e)
         {
             FileOpenPicker fo = new FileOpenPicker();
             fo.FileTypeFilter.Add(".png");
@@ -39,14 +38,33 @@ namespace ImageEditor
             var f = await fo.PickSingleFileAsync();
             if (f != null)
             {
+                // create instance and show it
                 ImageEditorControl editor = new ImageEditorControl();
                 editor.Show(f);
 
+                //register event to get edited image
                 editor.ImageEditedCompleted += (image_edited) =>
-                  {
-                      image.Source = image_edited;
-                  };
+                {
+                    image.Source = image_edited;
+                };
             }
+        }
+
+        private void EditRemote_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var url = "http://imgstore.cdn.sogou.com/app/a/100540002/714860.jpg";
+            
+            
+            // create instance and show it
+            ImageEditorControl editor = new ImageEditorControl();
+            editor.Show(new Uri(url));
+
+            //register event to get edited image
+            editor.ImageEditedCompleted += (image_edited) =>
+            {
+                image.Source = image_edited;
+            };
+
         }
     }
 }

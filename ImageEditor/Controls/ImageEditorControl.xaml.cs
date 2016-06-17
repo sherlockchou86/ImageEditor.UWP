@@ -172,17 +172,13 @@ namespace ImageEditor.Controls
         {
             try
             {
+                Show();
+                WaitLoading.IsActive = true;
                 CanvasDevice cd = CanvasDevice.GetSharedDevice();
                 var stream = await image.OpenAsync(FileAccessMode.Read);
                 _image = await CanvasBitmap.LoadAsync(cd, stream);
-                if (_image != null)
-                {
-                    Show();
-                }
-                else
-                {
-                    throw new Exception();
-                }
+                WaitLoading.IsActive = false;
+                MainCanvas.Invalidate();
             }
             catch
             {
@@ -195,7 +191,19 @@ namespace ImageEditor.Controls
         /// <param name="uri"></param>
         public async void Show(Uri uri)
         {
+            try
+            {
+                Show();
+                WaitLoading.IsActive = true;
+                CanvasDevice cd = CanvasDevice.GetSharedDevice();
+                _image = await CanvasBitmap.LoadAsync(cd, uri, 96);
+                WaitLoading.IsActive = false;
+                MainCanvas.Invalidate();
+            }
+            catch
+            {
 
+            }
         }
         /// <summary>
         /// PC窗体大小改变时，保证居中显示
@@ -358,14 +366,21 @@ namespace ImageEditor.Controls
         {
             var pen_color = sender as Border;
 
-            List<Border> l = new List<Border> { PenColor1, PenColor2, PenColor3, PenColor4, PenColor5 };
+            List<Border> l = new List<Border> { PenColor1, PenColor2, PenColor3, PenColor4, PenColor5, PenColor6 };
             l.ForEach((b) => { b.Child.Visibility = Visibility.Collapsed; });
 
             pen_color.Child.Visibility = Visibility.Visible;
 
-            _pen_color = (pen_color.Background as SolidColorBrush).Color;
-
-            PenSize1.Background = PenSize2.Background = PenSize3.Background = new SolidColorBrush(_pen_color);
+            if (pen_color.Background is ImageBrush)  //图片刷子
+            {
+                _pen_color = Colors.Transparent;
+                PenSize1.Background = PenSize2.Background = PenSize3.Background = pen_color.Background;
+            }
+            else
+            {
+                _pen_color = (pen_color.Background as SolidColorBrush).Color;
+                PenSize1.Background = PenSize2.Background = PenSize3.Background = new SolidColorBrush(_pen_color);
+            }
         }
         /// <summary>
         /// 操作画布开始
@@ -379,6 +394,7 @@ namespace ImageEditor.Controls
                 if (_current_editing_doodleUI == null)
                 {
                     _current_editing_doodleUI = new DoodleUI() { DrawingColor = _pen_color, DrawingSize = _pen_size };
+                    _current_editing_doodleUI.InitImageBrush();  //可能是图片图片画刷  需要提前初始化
                 }
                 return;
             }
@@ -575,15 +591,15 @@ namespace ImageEditor.Controls
                 var t = "";
                 if (_size_mode == 0)
                 {
-                    t = "1:1";
+                    t = "4:3";
                 }
                 else if (_size_mode == 1)
                 {
-                    t = "4:3";
+                    t = "3:4";
                 }
                 else
                 {
-                    t = "3:4";
+                    t = "1:1";
                 }
                 (LayoutCommand3_Panel.Children[1] as TextBlock).Text = t;
             }
@@ -694,7 +710,7 @@ namespace ImageEditor.Controls
         private Stretch _stretch = Stretch.Uniform;  //底图图片填充方式
         private int _size_mode = 2;  //画布长宽比  0/ 1:1  1/ 4:3  2/ 3:4
         private int _rotate = 0;   //底图图片旋转度数（360度==0度）
-        private int _pen_size = 1;   //涂鸦画笔粗细
+        private int _pen_size = 2;   //涂鸦画笔粗细
         private Color _pen_color = Colors.Orange;  //涂鸦画笔颜色
         private DoodleUI _current_editing_doodleUI;  //当前涂鸦对象
         private CanvasBitmap _image;  //底图

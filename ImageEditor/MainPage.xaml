@@ -7,8 +7,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid DoubleTapped="Grid_DoubleTapped" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Image Name="image" Stretch="None">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Padding="20">
+            <Button Name="EditLocal" Tapped="EditLocal_Tapped"  Content="Edit Local Image"></Button>
+            <Button Name="EditRemote" Tapped="EditRemote_Tapped" Margin="10,0,0,0" Content="Edit Remote Image"></Button>
+        </StackPanel>
+        <Image Grid.Row="1" Name="image" Stretch="Uniform">
             
         </Image>
     </Grid>

@@ -95,8 +95,18 @@ namespace ImageEditor.DrawingObjects
                 graphics.DrawLine((float)(Left + Width * 2 / 3), (float)Top, (float)(Left + Width * 2 / 3), (float)(Top + Height), Colors.Orange, 0.3f, style);
             }
             graphics.FillCircle((float)Left, (float)Top, radius, DrawColor);  //×
+            graphics.DrawLine((float)Left - 4, (float)Top - 4, (float)Left + 4, (float)Top + 4, Colors.White);
+            graphics.DrawLine((float)Left - 4, (float)Top + 4, (float)Left + 4, (float)Top - 4, Colors.White);
             graphics.FillCircle((float)(Left + Width), (float)Top, radius, DrawColor); //√
+            graphics.DrawLine((float)(Left + Width - 4), (float)(Top - 1), (float)(Left + Width), (float)(Top + 3), Colors.White);
+            graphics.DrawLine((float)(Left + Width), (float)(Top + 3), (float)(Left + Width + 4), (float)(Top - 4), Colors.White);
             graphics.FillCircle((float)(Left + Width), (float)(Top + Height), radius, DrawColor); //缩放
+            graphics.DrawLine((float)(Left + Width - 4), (float)(Top + Height - 4), (float)(Left + Width + 4), (float)(Top + Height + 4), Colors.White);
+            graphics.DrawLine((float)(Left + Width - 4), (float)(Top + Height - 4), (float)(Left + Width - 4), (float)(Top + Height), Colors.White);
+            graphics.DrawLine((float)(Left + Width - 4), (float)(Top + Height - 4), (float)(Left + Width), (float)(Top + Height - 4), Colors.White);
+            graphics.DrawLine((float)(Left + Width + 4), (float)(Top + Height + 4), (float)(Left + Width), (float)(Top + Height + 4), Colors.White);
+            graphics.DrawLine((float)(Left + Width + 4), (float)(Top + Height + 4), (float)(Left + Width + 4), (float)(Top + Height), Colors.White);
+
         }
     }
 }

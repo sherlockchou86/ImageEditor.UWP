@@ -73,7 +73,7 @@
                                                     <CompositeTransform ScaleX="0.8" ScaleY="0.8"/>
                                                 </SymbolIcon.RenderTransform>
                                             </SymbolIcon>
-                                            <TextBlock Text="白边" Foreground="Gray" FontSize="12"></TextBlock>
+                                            <TextBlock Text="填充" Foreground="Gray" FontSize="12"></TextBlock>
                                         </StackPanel>
                                     </GridViewItem>
                                     <GridViewItem Name="LayoutCommand2" Padding="5" Tapped="LayoutCommand_Tapped">
@@ -207,7 +207,7 @@
                                     <!--滤镜-->
                                     <GridViewItem>
                                         <StackPanel Padding="2" Tag="0">
-                                            <Image Width="46" Height="46" Stretch="UniformToFill" Source="/Images/default_image.jpg">
+                                            <Image Width="46" Height="46" Stretch="UniformToFill" Source="/Images/filters/filter0.png">
 
                                             </Image>
                                             <Border Padding="0,1,0,2" Background="Orange">
@@ -219,7 +219,7 @@
                                     </GridViewItem>
                                     <GridViewItem>
                                         <StackPanel Padding="2" Tag="1">
-                                            <Image Width="46" Height="46" Stretch="UniformToFill" Source="/Images/default_image.jpg">
+                                            <Image Width="46" Height="46" Stretch="UniformToFill" Source="/Images/filters/filter1.png">
 
                                             </Image>
                                             <Border Padding="0,1,0,2">
@@ -231,7 +231,7 @@
                                     </GridViewItem>
                                     <GridViewItem>
                                         <StackPanel Padding="2" Tag="2">
-                                            <Image Width="46" Height="46" Stretch="UniformToFill" Source="/Images/default_image.jpg">
+                                            <Image Width="46" Height="46" Stretch="UniformToFill" Source="/Images/filters/filter2.png">
 
                                             </Image>
                                             <Border Padding="0,1,0,2">
@@ -243,11 +243,11 @@
                                     </GridViewItem>
                                     <GridViewItem>
                                         <StackPanel Padding="2" Tag="3">
-                                            <Image Width="46" Height="46" Stretch="UniformToFill" Source="/Images/default_image.jpg">
+                                            <Image Width="46" Height="46" Stretch="UniformToFill" Source="/Images/filters/filter3.png">
 
                                             </Image>
                                             <Border Padding="0,1,0,2">
-                                                <TextBlock Text="冷淡" TextAlignment="Center" Foreground="Gray" FontSize="11">
+                                                <TextBlock Text="冷色" TextAlignment="Center" Foreground="Gray" FontSize="11">
 
                                                 </TextBlock>
                                             </Border>
@@ -255,7 +255,7 @@
                                     </GridViewItem>
                                     <GridViewItem>
                                         <StackPanel Padding="2" Tag="4">
-                                            <Image Width="46" Height="46" Stretch="UniformToFill" Source="/Images/default_image.jpg">
+                                            <Image Width="46" Height="46" Stretch="UniformToFill" Source="/Images/filters/filter4.png">
 
                                             </Image>
                                             <Border Padding="0,1,0,2">
@@ -267,7 +267,7 @@
                                     </GridViewItem>
                                     <GridViewItem>
                                         <StackPanel Padding="2" Tag="5">
-                                            <Image Width="46" Height="46" Stretch="UniformToFill" Source="/Images/default_image.jpg">
+                                            <Image Width="46" Height="46" Stretch="UniformToFill" Source="/Images/filters/filter5.png">
 
                                             </Image>
                                             <Border Padding="0,1,0,2">
@@ -279,7 +279,7 @@
                                     </GridViewItem>
                                     <GridViewItem>
                                         <StackPanel Padding="2" Tag="6">
-                                            <Image Width="46" Height="46" Stretch="UniformToFill" Source="/Images/default_image.jpg">
+                                            <Image Width="46" Height="46" Stretch="UniformToFill" Source="/Images/filters/filter6.png">
 
                                             </Image>
                                             <Border Padding="0,1,0,2">
@@ -291,7 +291,7 @@
                                     </GridViewItem>
                                     <GridViewItem>
                                         <StackPanel Padding="2" Tag="7">
-                                            <Image Width="46" Height="46" Stretch="UniformToFill" Source="/Images/default_image.jpg">
+                                            <Image Width="46" Height="46" Stretch="UniformToFill" Source="/Images/filters/filter7.png">
 
                                             </Image>
                                             <Border Padding="0,1,0,2">
@@ -303,7 +303,7 @@
                                     </GridViewItem>
                                     <GridViewItem>
                                         <StackPanel Padding="2" Tag="8">
-                                            <Image Width="46" Height="46" Stretch="UniformToFill" Source="/Images/default_image.jpg">
+                                            <Image Width="46" Height="46" Stretch="UniformToFill" Source="/Images/filters/filter8.png">
 
                                             </Image>
                                             <Border Padding="0,1,0,2">
@@ -335,13 +335,13 @@
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
                                     <!--画笔粗细-->
-                                    <Border Name="PenSize1" Tag="10" Grid.Row="0" Grid.Column="0" Width="10" Height="10" Background="Orange" CornerRadius="5" Tapped="PenSize_Tapped">
+                                    <Border Name="PenSize1" Tag="2" Grid.Row="0" Grid.Column="0" Width="10" Height="10" Background="Orange" CornerRadius="5" Tapped="PenSize_Tapped">
                                         <Ellipse Margin="1" Stroke="White"></Ellipse>
                                     </Border>
-                                    <Border Name="PenSize2" Tag="16" Grid.Row="0" Grid.Column="1" Width="16" Height="16" Background="Orange" CornerRadius="8" Tapped="PenSize_Tapped">
-                                        <Ellipse Margin="1" Stroke="White"></Ellipse>
+                                    <Border Name="PenSize2" Tag="6" Grid.Row="0" Grid.Column="1" Width="16" Height="16" Background="Orange" CornerRadius="8" Tapped="PenSize_Tapped">
+                                        <Ellipse Visibility="Collapsed" Margin="1" Stroke="White"></Ellipse>
                                     </Border>
-                                    <Border Name="PenSize3" Tag="20" Grid.Row="0" Grid.Column="2" Width="20" Height="20" Background="Orange" CornerRadius="10" Tapped="PenSize_Tapped">
+                                    <Border Name="PenSize3" Tag="10" Grid.Row="0" Grid.Column="2" Width="20" Height="20" Background="Orange" CornerRadius="10" Tapped="PenSize_Tapped">
                                         <Ellipse Visibility="Collapsed" Margin="1" Stroke="White"></Ellipse>
                                     </Border>
                                     <!--画笔颜色-->
@@ -349,7 +349,7 @@
                                         <Rectangle Stroke="White" Margin="1"></Rectangle>
                                     </Border>
                                     <Border Name="PenColor2" Grid.Row="1" Grid.Column="1" Width="16" Height="16" Background="Red" Tapped="PenColor_Tapped">
-                                        <Rectangle Stroke="White" Margin="1"></Rectangle>
+                                        <Rectangle Visibility="Collapsed" Stroke="White" Margin="1"></Rectangle>
                                     </Border>
                                     <Border Name="PenColor3" Grid.Row="1" Grid.Column="2" Width="16" Height="16" Background="Green" Tapped="PenColor_Tapped">
                                         <Rectangle Visibility="Collapsed" Stroke="White" Margin="1"></Rectangle>
@@ -358,6 +358,12 @@
                                         <Rectangle Visibility="Collapsed" Stroke="White" Margin="1"></Rectangle>
                                     </Border>
                                     <Border Name="PenColor5" Grid.Row="1" Grid.Column="4" Width="16" Height="16" Background="Black" Tapped="PenColor_Tapped">
+                                        <Rectangle Visibility="Collapsed" Stroke="White" Margin="1"></Rectangle>
+                                    </Border>
+                                    <Border Name="PenColor6" Grid.Row="1" Grid.Column="5" Width="16" Height="16" Tapped="PenColor_Tapped">
+                                        <Border.Background>
+                                            <ImageBrush Stretch="None"  ImageSource="ms-appx:///Images/default_back.png"/>
+                                        </Border.Background>
                                         <Rectangle Visibility="Collapsed" Stroke="White" Margin="1"></Rectangle>
                                     </Border>
 
@@ -448,5 +454,9 @@
                 </RelativePanel>
             </StackPanel>
         </StackPanel>
+
+        <ProgressRing Grid.Row="1" Name="WaitLoading" IsActive="False">
+            
+        </ProgressRing>
     </Grid>
 </UserControl>
