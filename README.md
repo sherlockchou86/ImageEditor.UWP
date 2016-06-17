@@ -18,6 +18,35 @@ this tool has these features below:
 - draw on the canvas, you can select pen-size, pen-color(image) which you like;
 - save the canvas as a `BitmapImage` object, which you can directly use.
 
+**Notes:**
+
+the sticker template is downloaded from network.
+you can define a json-format file and save on the internet, the tool download the file Automaticly and parse it.
+
+the json file like below:
+```
+{
+	"papers":
+	[
+	{
+		"name":"",
+		"image_url":"http://d.lanrentuku.com/down/png/1510/haizeiwang-png/notes.png",
+		"des":""
+	},
+	{
+		"name":"",
+		"image_url":"http://d.lanrentuku.com/down/png/1510/haizeiwang-png/gallery.png",
+		"des":""
+	},
+	{
+		"name":"",
+		"image_url":"http://d.lanrentuku.com/down/png/1510/haizeiwang-png/maps.png",
+		"des":""
+	}
+	]
+}
+```
+
 
 ## how to use
 it's very simple to use this tool(libaray), you just need these code snippets below:
@@ -47,3 +76,11 @@ it's very simple to use this tool(libaray), you just need these code snippets be
 ```
 
 ## some screenshots
+
+![](https://github.com/sherlockchou86/ImageEditor.UWP/blob/master/ScreenShots/image1.jpg?raw=true)
+
+![](https://github.com/sherlockchou86/ImageEditor.UWP/blob/master/ScreenShots/image2.jpg?raw=true)
+
+![](https://github.com/sherlockchou86/ImageEditor.UWP/blob/master/ScreenShots/image4.jpg?raw=true)
+
+![](https://github.com/sherlockchou86/ImageEditor.UWP/blob/master/ScreenShots/image3.png?raw=true)
