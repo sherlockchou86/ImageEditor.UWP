@@ -20,8 +20,9 @@ this tool has these features below:
 
 **Notes:**
 
-the sticker template is downloaded from network.
+- the sticker template is downloaded from network.
 you can define a json-format file and save on the internet, the tool download the file Automaticly and parse it.
+- if you want to create an independent libaray, you just need create a libaray project and copy 'Controls', 'DrawingObjects', 'Images', 'Resources' and 'Tools' directories to the new project(change the namespace if you want)
 
 the json file like below:
 ```
